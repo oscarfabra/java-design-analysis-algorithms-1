@@ -1,6 +1,6 @@
 /**
  * $Id: Edge.java, v 1.0 08/06/14 10:52 oscarfabra Exp $
- * {@code Edge} Represents an Edge in the Graph class containing the id of its
+ * {@code Edge} Represents an Edge in the Graph class containing the ids of its
  * tail and head vertices, and a non-negative length. <br/>
  *
  * @author <a href="mailto:oscarfabra@gmail.com">Oscar Fabra</a>
@@ -9,7 +9,7 @@
  */
 
 /**
- * Class that represents an Edge in the Graph class containing the id of its
+ * Class that represents an Edge in the Graph class containing the ids of its
  * tail and head vertices, and a non-negative length. <br/>
  * @see Graph
  * @see Vertex
@@ -29,7 +29,7 @@ public class Edge
     // Id of head vertex
     private int head;
 
-    // Length of this edge
+    // Length of this edge, length > 0
     private int length;
 
     //-------------------------------------------------------------------------
