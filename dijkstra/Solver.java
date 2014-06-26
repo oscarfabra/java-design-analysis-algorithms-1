@@ -31,7 +31,29 @@ public class Solver
      */
     private static void solve(List<String> lines)
     {
-        // TODO: Solve the problem...
+        // Gets an array of lists of edges from the given lines. edgesArray[i]
+        // contains the list of edges whose tail is vertex with id i + 1, i in
+        // [0...n-1]
+        List<Edge>[] edgesArray = Graph.readEdgesArray(lines);
+
+        // Gets the length of the array
+        int n = edgesArray.length;
+
+        // Creates a new Graph object with the given parameters
+        Graph graph = new Graph(n, edgesArray);
+
+        // Computes the shortest paths from vertex 1 to all other vertices in
+        // the given graph. paths[i] contains the path from vertex 1 to vertex
+        // with id i + 1, i in [0...n-1]
+        List<Integer> paths = Dijkstra.solve(1, graph);
+
+        System.out.println("The lengths of the shortest paths from vertex 1 " +
+                "to vertices 7, 37, 59, 82, 99, 115, 133, 165, 188, 197 are:");
+        System.out.print(paths.get(6) + ", " + paths.get(36) + ", ");
+        System.out.print(paths.get(58) + ", " + paths.get(81) + ", ");
+        System.out.print(paths.get(98) + ", " + paths.get(114) + ", ");
+        System.out.print(paths.get(132) + ", " + paths.get(164) + ", ");
+        System.out.print(paths.get(187) + ", " + paths.get(196) + ".");
     }
 
     /**

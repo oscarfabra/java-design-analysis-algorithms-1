@@ -48,9 +48,8 @@ public class Graph
      * <b>Pre: </b> The Vertex class has been initialized with Vertex.init()
      * @param n Number of vertices of the graph.
      * @param adj Array of lists with the adjacent vertices, and edges' lengths
-     *            starting from each vertex.
      */
-    public Graph(int n, List<Integer>[] adj)
+    public Graph(int n, List<Edge>[] adj)
     {
         // Initializes the list of vertices, O(n) algorithm
         this.n = n;
@@ -180,5 +179,45 @@ public class Graph
         // TODO: Get head vertices...
 
         return new Vertex[0];
+    }
+
+    /**
+     * Reads the given lines of String and gets an array of lists of edges.
+     * <b>Pre:</b> There are exactly n lines; each of them contains a String of
+     * the form "v1 v2,l2 v3,l3 ..." which indicates that vertex with id v1 has
+     * an edge pointing to v2 of length l2, and an edge pointing to v3 of
+     * length l3, and so on. <br/>
+     * <b>Post:</b> edgesArray[i] contains the list of edges whose tail is
+     * vertex with id i + 1, i in [0...n-1]
+     * @param lines List of String with the values to get the edges from.
+     * @return Array of lists of edges with edges coming out from each vertex.
+     */
+    public static List<Edge>[] readEdgesArray(List<String> lines)
+    {
+        List<Edge>[] edgesArray = (ArrayList<Edge>[])new ArrayList[lines.size()];
+
+        // Constructs the edgesArray array of lists of edges
+        int i = 0;
+        int newEdgeId = 1;
+        for(String line : lines)
+        {
+            // Extracts the values of the edges from each line
+            String[] values = line.split("\t");
+
+            // Creates the new ArrayList in position i of the edgesArray array
+            // of lists of edges and adds each of the edges
+            edgesArray[i] = new ArrayList<Edge>(values.length - 1);
+            for(int j = 1; j < values.length; j++)
+            {
+                String[] headAndLength = values[j].split(",");
+                int headId = Integer.parseInt(headAndLength[0]);
+                int length = Integer.parseInt(headAndLength[1]);
+                Edge edge = new Edge(newEdgeId++, i + 1, headId, length);
+                edgesArray[i].add(edge);
+            }
+        }
+
+        // Returns the constructed array of lists of edges
+        return edgesArray;
     }
 }
