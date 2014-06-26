@@ -33,11 +33,11 @@ public class Graph
     // List of edges
     private List<Edge> E;
 
-    // Endpoints of each edge in E
-    private List<Integer> edgesEndpoints;
+    // Each edge in E points to its endpoints (head vertices)
+    private List<Integer>[] edgesEndpoints;
 
-    // Edges incident on each vertex in V
-    private List<Integer> vertexEdges;
+    // Each vertex in V points to its arriving edges
+    private List<Integer>[] vertexEdgesArriving;
 
     //-------------------------------------------------------------------------
     // CONSTRUCTORS
@@ -45,29 +45,47 @@ public class Graph
 
     /**
      * Creates a new graph from the given parameters.
-     * <b>Pre: </b> The Vertex class has been initialized with Vertex.init()
      * @param n Number of vertices of the graph.
-     * @param adj Array of lists with the adjacent vertices, and edges' lengths
+     * @param edgesArray Array of lists of edges coming out from each vertex.
      */
-    public Graph(int n, List<Edge>[] adj)
+    public Graph(int n, List<Edge>[] edgesArray)
     {
-        // Initializes the list of vertices, O(n) algorithm
+        // Initializes the list of vertices and vertexEdgesArriving array of
+        // lists, O(n) algorithm
         this.n = n;
         int newVertexId = 1;
-        this.V = new ArrayList<Vertex>(n);
-        System.out.print("-- Initializing list of vertices V...");
+        this.V = new ArrayList<Vertex>(this.n);
+        this.vertexEdgesArriving = (ArrayList<Integer>[])new ArrayList[this.n];
         for(int i = 0; i < n; i++)
         {
             this.V.add(i, new Vertex(newVertexId++));
+            this.vertexEdgesArriving[i] = new ArrayList<Integer>();
         }
-        System.out.println("done.");
 
-        // Initializes the list of edges and vertexEdgesIndices, O(n*m) algorithm
-        this.m = 0;
-        int newEdgeId = 1;
+        // Initializes list of edges, and vertexEdgesArriving array of lists,
+        // O(n*m) algorithm
         this.E = new ArrayList<Edge>();
+        for(List<Edge> vertexEdges : edgesArray)
+        {
+            for(Edge edge : vertexEdges)
+            {
+                // Adds the edge to E
+                this.E.add(edge);
+                // Adds the edge's id to its corresponding list in
+                // vertexEdgesArriving
+                this.vertexEdgesArriving[edge.getHead() - 1].add(edge.getId());
+            }
+        }
 
-        // TODO: Initialize remaining lists...
+        // Assigns m as the size of E
+        this.m = this.E.size();
+
+        // Initializes edgesEndpoints list
+        this.edgesEndpoints = (ArrayList<Integer>[])new ArrayList[this.m];
+        for(Edge edge : this.E)
+        {
+            this.edgesEndpoints[edge.getId() - 1].add(edge.getHead());
+        }
     }
 
     /**
@@ -80,6 +98,50 @@ public class Graph
     }
 
     //-------------------------------------------------------------------------
+    // PUBLIC CLASS METHODS
+    //-------------------------------------------------------------------------
+
+    /**
+     * Reads the given lines of String and gets an array of lists of edges.
+     * <b>Pre:</b> There are exactly n lines; each of them contains a String of
+     * the form "v1 v2,l2 v3,l3 ..." which indicates that vertex with id v1 has
+     * an edge pointing to v2 of length l2, and an edge pointing to v3 of
+     * length l3, and so on. <br/>
+     * <b>Post:</b> edgesArray[i] contains the list of edges whose tail is
+     * vertex with id i + 1, i in [0...n-1]
+     * @param lines List of String with the values to get the edges from.
+     * @return Array of lists of edges with edges coming out from each vertex.
+     */
+    public static List<Edge>[] readEdgesArray(List<String> lines)
+    {
+        List<Edge>[] edgesArray = (ArrayList<Edge>[])new ArrayList[lines.size()];
+
+        // Constructs the edgesArray array of lists of edges
+        int i = 0;
+        int newEdgeId = 1;
+        for(String line : lines)
+        {
+            // Extracts the values of the edges from each line
+            String[] values = line.split("\t");
+
+            // Creates the new ArrayList in position i of the edgesArray array
+            // of lists of edges and adds each of the edges
+            edgesArray[i] = new ArrayList<Edge>(values.length - 1);
+            for(int j = 1; j < values.length; j++)
+            {
+                String[] headAndLength = values[j].split(",");
+                int headId = Integer.parseInt(headAndLength[0]);
+                int length = Integer.parseInt(headAndLength[1]);
+                Edge edge = new Edge(newEdgeId++, i + 1, headId, length);
+                edgesArray[i].add(edge);
+            }
+        }
+
+        // Returns the constructed array of lists of edges
+        return edgesArray;
+    }
+
+    //-------------------------------------------------------------------------
     // PUBLIC METHODS
     //-------------------------------------------------------------------------
 
@@ -89,23 +151,27 @@ public class Graph
      */
     public void copy(Graph that)
     {
-        // Copies the list of vertices
+        // Copies the list of vertices, and vertexEdgesArriving array of lists
         this.n = that.n;
         this.V = new ArrayList<Vertex>();
-        for(int i = 0; i < that.V.size(); i++)
+        this.vertexEdgesArriving = (ArrayList<Integer>[])new ArrayList[that.n];
+        for(int i = 0; i < that.n; i++)
         {
             this.V.add(new Vertex(that.V.get(i)));
+            this.vertexEdgesArriving[i] =
+                    new ArrayList<Integer>(that.vertexEdgesArriving[i]);
         }
 
-        // Copies the list of edges
+        // Copies the list of edges, and edgesEndpoints array of lists
         this.m = that.m;
         this.E = new ArrayList<Edge>();
-        for(int i = 0; i < that.E.size(); i++)
+        this.edgesEndpoints = (ArrayList<Integer>[])new ArrayList[that.m];
+        for(int i = 0; i < that.m; i++)
         {
             this.E.add(new Edge(that.E.get(i)));
+            this.edgesEndpoints[i] =
+                    new ArrayList<Integer>(that.edgesEndpoints[i]);
         }
-
-        // TODO: Copy remaining lists...
     }
 
     /**
@@ -179,45 +245,5 @@ public class Graph
         // TODO: Get head vertices...
 
         return new Vertex[0];
-    }
-
-    /**
-     * Reads the given lines of String and gets an array of lists of edges.
-     * <b>Pre:</b> There are exactly n lines; each of them contains a String of
-     * the form "v1 v2,l2 v3,l3 ..." which indicates that vertex with id v1 has
-     * an edge pointing to v2 of length l2, and an edge pointing to v3 of
-     * length l3, and so on. <br/>
-     * <b>Post:</b> edgesArray[i] contains the list of edges whose tail is
-     * vertex with id i + 1, i in [0...n-1]
-     * @param lines List of String with the values to get the edges from.
-     * @return Array of lists of edges with edges coming out from each vertex.
-     */
-    public static List<Edge>[] readEdgesArray(List<String> lines)
-    {
-        List<Edge>[] edgesArray = (ArrayList<Edge>[])new ArrayList[lines.size()];
-
-        // Constructs the edgesArray array of lists of edges
-        int i = 0;
-        int newEdgeId = 1;
-        for(String line : lines)
-        {
-            // Extracts the values of the edges from each line
-            String[] values = line.split("\t");
-
-            // Creates the new ArrayList in position i of the edgesArray array
-            // of lists of edges and adds each of the edges
-            edgesArray[i] = new ArrayList<Edge>(values.length - 1);
-            for(int j = 1; j < values.length; j++)
-            {
-                String[] headAndLength = values[j].split(",");
-                int headId = Integer.parseInt(headAndLength[0]);
-                int length = Integer.parseInt(headAndLength[1]);
-                Edge edge = new Edge(newEdgeId++, i + 1, headId, length);
-                edgesArray[i].add(edge);
-            }
-        }
-
-        // Returns the constructed array of lists of edges
-        return edgesArray;
     }
 }
