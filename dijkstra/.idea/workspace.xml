@@ -55,7 +55,7 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/Solver.java" line="36" class="Solver" package="">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -96,10 +96,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Solver.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Solver.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Solver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="0" selection-start="1668" selection-end="1668" vertical-scroll-proportion="0.0" vertical-offset="382" max-vertical-offset="2040">
+            <state line="49" column="0" selection-start="1718" selection-end="1718" vertical-scroll-proportion="0.3327674" vertical-offset="416" max-vertical-offset="2040">
               <folding />
             </state>
           </provider>
@@ -108,19 +108,16 @@
       <file leaf-file-name="Graph.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Graph.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="225" column="0" selection-start="7703" selection-end="7703" vertical-scroll-proportion="0.0" vertical-offset="3134" max-vertical-offset="3723">
-              <folding>
-                <element signature="e#7011#7017#0" expanded="true" />
-                <element signature="e#7551#7557#0" expanded="true" />
-              </folding>
+            <state line="225" column="0" selection-start="7703" selection-end="7703" vertical-scroll-proportion="0.0" vertical-offset="3825" max-vertical-offset="3978">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Dijkstra.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Dijkstra.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Dijkstra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="89" column="9" selection-start="3525" selection-end="3525" vertical-scroll-proportion="0.028862478" vertical-offset="1360" max-vertical-offset="3553">
+            <state line="127" column="0" selection-start="5027" selection-end="5027" vertical-scroll-proportion="0.0" vertical-offset="1827" max-vertical-offset="3553">
               <folding />
             </state>
           </provider>
@@ -187,6 +184,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -221,8 +220,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -500,15 +497,16 @@
       <workItem from="1403738332922" duration="253000" />
       <workItem from="1403803930563" duration="26656000" />
       <workItem from="1403888617495" duration="9071000" />
+      <workItem from="1403905047603" duration="1574000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43478000" />
+    <option name="totallyTimeSpent" value="45052000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="1" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -517,7 +515,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4478852" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4471299" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -531,19 +529,19 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12386707" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -588,6 +586,34 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Solver.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="0" selection-start="1668" selection-end="1668" vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="2261">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Graph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="225" column="0" selection-start="7703" selection-end="7703" vertical-scroll-proportion="0.0" vertical-offset="3825" max-vertical-offset="3978">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dijkstra.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="9" selection-start="3525" selection-end="3525" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3553">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/dijkstra_4_1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="170">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Solver.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="47" column="42" selection-start="1710" selection-end="1710" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2261">
           <folding />
         </state>
@@ -596,10 +622,7 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="226" column="0" selection-start="7675" selection-end="7675" vertical-scroll-proportion="0.0" vertical-offset="3842" max-vertical-offset="3944">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -612,9 +635,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data/dijkstra.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="200" column="0" selection-start="32037" selection-end="32037" vertical-scroll-proportion="0.0" vertical-offset="2911" max-vertical-offset="3502">
-          <folding />
-        </state>
+        <state line="200" column="0" selection-start="32037" selection-end="32037" vertical-scroll-proportion="0.0" vertical-offset="2911" max-vertical-offset="3502" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Solver.java">
@@ -650,10 +671,7 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="22" selection-start="374" selection-end="374" vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="3230">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -690,10 +708,7 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3247">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -719,10 +734,7 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -748,10 +760,7 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -777,10 +786,7 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -812,9 +818,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data/dijkstra.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="200" column="0" selection-start="32037" selection-end="32037" vertical-scroll-proportion="0.0" vertical-offset="2911" max-vertical-offset="3502">
-          <folding />
-        </state>
+        <state line="200" column="0" selection-start="32037" selection-end="32037" vertical-scroll-proportion="0.0" vertical-offset="2911" max-vertical-offset="3502" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/dijkstra_4_1.txt">
@@ -827,23 +831,20 @@
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="225" column="0" selection-start="7703" selection-end="7703" vertical-scroll-proportion="0.0" vertical-offset="3134" max-vertical-offset="3723">
-          <folding>
-            <element signature="e#7011#7017#0" expanded="true" />
-            <element signature="e#7551#7557#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Solver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="0" selection-start="1668" selection-end="1668" vertical-scroll-proportion="0.0" vertical-offset="382" max-vertical-offset="2040">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Dijkstra.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="9" selection-start="3525" selection-end="3525" vertical-scroll-proportion="0.028862478" vertical-offset="1360" max-vertical-offset="3553">
+        <state line="127" column="0" selection-start="5027" selection-end="5027" vertical-scroll-proportion="0.0" vertical-offset="1827" max-vertical-offset="3553">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Solver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="0" selection-start="1718" selection-end="1718" vertical-scroll-proportion="0.3327674" vertical-offset="416" max-vertical-offset="2040">
           <folding />
         </state>
       </provider>

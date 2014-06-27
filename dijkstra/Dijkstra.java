@@ -67,7 +67,7 @@ public class Dijkstra
         Dijkstra.x = new ArrayList<Integer>(n);
         Dijkstra.a = new int [n];
         Dijkstra.heap = new PriorityQueue<Integer>(n);
-        Dijkstra.vertexHeapKey = new HashMap<Integer, Integer>(n);
+        Dijkstra.vertexHeapKey = new HashMap<Integer, List<Integer>>(n);
         Dijkstra.heapKeyVertex = new HashMap<Integer, Integer>(n);
 
         // Assumes infinite distances between s and all the other vertices
