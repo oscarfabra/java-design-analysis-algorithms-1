@@ -33,11 +33,11 @@ public class Graph
     // List of edges
     private List<Edge> E;
 
-    // Each edge in E points to its endpoints (head vertices)
-    private List<Integer>[] edgesEndpoints;
-
     // Each vertex in V points to its arriving edges
     private List<Integer>[] vertexEdgesArriving;
+
+    // Each vertex in V points to its leaving edges
+    private List<Integer>[] vertexEdgesLeaving;
 
     //-------------------------------------------------------------------------
     // CONSTRUCTORS
@@ -50,21 +50,24 @@ public class Graph
      */
     public Graph(int n, List<Edge>[] edgesArray)
     {
-        // Initializes the list of vertices and vertexEdgesArriving array of
-        // lists, O(n) algorithm
+        // Initializes the list of vertices, and vertexEdgesArriving and
+        // vertexEdgesLeaving arrays of lists, O(n) algorithm
         this.n = n;
         int newVertexId = 1;
         this.V = new ArrayList<Vertex>(this.n);
         this.vertexEdgesArriving = (ArrayList<Integer>[])new ArrayList[this.n];
+        this.vertexEdgesLeaving = (ArrayList<Integer>[])new ArrayList[this.n];
         for(int i = 0; i < n; i++)
         {
             this.V.add(i, new Vertex(newVertexId++));
             this.vertexEdgesArriving[i] = new ArrayList<Integer>();
+            this.vertexEdgesLeaving[i] = new ArrayList<Integer>();
         }
 
-        // Initializes list of edges, and vertexEdgesArriving array of lists,
-        // O(n*m) algorithm
+        // Initializes list of edges, and vertexEdgesArriving and
+        // vertexEdgesLeaving array of lists, O(n*m) algorithm
         this.E = new ArrayList<Edge>();
+        int i = 0;
         for(List<Edge> vertexEdges : edgesArray)
         {
             for(Edge edge : vertexEdges)
@@ -74,18 +77,15 @@ public class Graph
                 // Adds the edge's id to its corresponding list in
                 // vertexEdgesArriving
                 this.vertexEdgesArriving[edge.getHead() - 1].add(edge.getId());
+                // Adds the edge's id to its corresponding list in
+                // vertexEdgesLeaving
+                this.vertexEdgesLeaving[i + 1].add(edge.getId());
             }
+            i++;
         }
 
         // Assigns m as the size of E
         this.m = this.E.size();
-
-        // Initializes edgesEndpoints list
-        this.edgesEndpoints = (ArrayList<Integer>[])new ArrayList[this.m];
-        for(Edge edge : this.E)
-        {
-            this.edgesEndpoints[edge.getId() - 1].add(edge.getHead());
-        }
     }
 
     /**
@@ -151,7 +151,8 @@ public class Graph
      */
     public void copy(Graph that)
     {
-        // Copies the list of vertices, and vertexEdgesArriving array of lists
+        // Copies the list of vertices, vertexEdgesArriving and
+        // vertexEdgesLeaving arrays of lists
         this.n = that.n;
         this.V = new ArrayList<Vertex>();
         this.vertexEdgesArriving = (ArrayList<Integer>[])new ArrayList[that.n];
@@ -160,17 +161,16 @@ public class Graph
             this.V.add(new Vertex(that.V.get(i)));
             this.vertexEdgesArriving[i] =
                     new ArrayList<Integer>(that.vertexEdgesArriving[i]);
+            this.vertexEdgesLeaving[i] =
+                    new ArrayList<Integer>(that.vertexEdgesLeaving[i]);
         }
 
-        // Copies the list of edges, and edgesEndpoints array of lists
+        // Copies the list of edges
         this.m = that.m;
         this.E = new ArrayList<Edge>();
-        this.edgesEndpoints = (ArrayList<Integer>[])new ArrayList[that.m];
         for(int i = 0; i < that.m; i++)
         {
             this.E.add(new Edge(that.E.get(i)));
-            this.edgesEndpoints[i] =
-                    new ArrayList<Integer>(that.edgesEndpoints[i]);
         }
     }
 
@@ -193,57 +193,34 @@ public class Graph
     }
 
     /**
-     * Returns the vertex at position vertexIndex in V.
-     * @param vertexIndex Index of the vertex in list of vertices V.
-     * @return The vertex in the given position.
-     */
-    public Vertex getVertexByIndex(int vertexIndex)
-    {
-        return this.V.get(vertexIndex);
-    }
-
-    /**
-     * Gets an Edge from E by its index number.
-     * @param edgeIndex Index number of the edge in E.
-     * @return The Edge object.
-     */
-    public Edge getEdgeByIndex(int edgeIndex)
-    {
-        return this.E.get(edgeIndex);
-    }
-
-    /**
-     * Sets the Edge from E by its index number.
-     * @param edgeIndex Index number of the edge in E.
-     * @param edge Edge object to put in the given position.
-     */
-    public void setEdgeByIndex(int edgeIndex, Edge edge)
-    {
-        this.E.set(edgeIndex, edge);
-    }
-
-    /**
-     * Sets the vertex with the given id as explored in V.
+     * Obtains and returns a list of the edges that point to the vertex with
+     * the given id.
      * @param vertexId Id of the vertex to look for.
+     * @return List of edges that point to the given vertex.
      */
-    public void setVertexAsExplored(int vertexId)
+    public List<Edge> getVertexEdgesArriving(int vertexId)
     {
-        Vertex vertex = this.V.get(vertexId - 1);
-        vertex.setExplored();
-        this.V.set(vertexId - 1, vertex);
+        List<Edge> edgesArriving = new ArrayList<Edge>();
+        for(Integer edgeId : this.vertexEdgesArriving[vertexId - 1])
+        {
+            edgesArriving.add(this.E.get(edgeId - 1));
+        }
+        return edgesArriving;
     }
 
     /**
-     * Returns a list with the vertices to where the vertex with the given id
-     * points at.
+     * Obtains and returns a list of the edges that come out from the vertex
+     * with the given id.
      * @param vertexId Id of the vertex to look for.
-     * @return List of vertices to where the vertex with the given id points
-     * to.
+     * @return List of edges that come out from the given vertex.
      */
-    public Vertex [] getHeadVertices(int vertexId)
+    public List<Edge> getVertexEdgesLeaving(int vertexId)
     {
-        // TODO: Get head vertices...
-
-        return new Vertex[0];
+        List<Edge> edgesLeaving = new ArrayList<Edge>();
+        for(Integer edgeId : this.vertexEdgesLeaving[vertexId - 1])
+        {
+            edgesLeaving.add(this.E.get(edgeId - 1));
+        }
+        return edgesLeaving;
     }
 }
