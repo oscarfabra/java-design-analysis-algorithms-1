@@ -58,9 +58,9 @@ public class Dijkstra
     {
         // Initializes the x list on which to store the ids of the vertices
         // processed so far, the path list a on which to store shortest path
-        // distance from s to each other vertex, the heap on which to store
+        // distances from s to each other vertex, the heap on which to store
         // vertices not yet explored, and the vertexHeapKey and heapKeyVertex
-        // array on which to store the keys of each vertex in the heap
+        // arrays on which to store the key of each vertex in the heap
         int n = graph.getN();
         Dijkstra.x = new ArrayList<Integer>(n);
         Dijkstra.a = new int [n];
@@ -81,7 +81,7 @@ public class Dijkstra
         Dijkstra.heapKeyVertex.put(s, -1);
 
         // Walks through each vertex not yet explored, calculates its key and
-        // adds it to the vertexHeapKey HashMap
+        // adds it to the vertexHeapKey and heapKeyVertex HashMaps
         for(int i = 1; i < n; i++)
         {
             int vertexScore = Dijkstra.minGreedyScore(i, graph);
@@ -92,15 +92,16 @@ public class Dijkstra
 
         // Walks through each vertex in the graph assigning the shortest path
         // from s to such vertex
-        for(int i = 1; i < n; i++)
+        while(Dijkstra.x.size() < n)
         {
             // Extracts the key for the minimum path vertex not yet explored
             int wKey = Dijkstra.heap.poll();
             int wId = Dijkstra.vertexHeapKey.get(wKey);
             Dijkstra.x.add(wId);
+            Dijkstra.a[wId - 1] = Dijkstra.heapKeyVertex.get(wId);
 
             // Updates key to the implicated edges (those whose tail is in X,
-            // but their heads are in V - X
+            // but their heads are in V - X)
             List<Edge> edgesLeaving = graph.getVertexEdgesLeaving(wId);
             for(Edge edge : edgesLeaving)
             {
@@ -124,7 +125,6 @@ public class Dijkstra
                     Dijkstra.heapKeyVertex.put(vId, vScore);
                 }
             }
-
         }
 
         // Returns the computed array with shortest paths

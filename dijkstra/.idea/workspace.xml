@@ -73,10 +73,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Graph.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Graph.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Graph.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="180" column="21" selection-start="6407" selection-end="6407" vertical-scroll-proportion="0.028239202" vertical-offset="3043" max-vertical-offset="3944">
+            <state line="226" column="0" selection-start="7675" selection-end="7675" vertical-scroll-proportion="0.0" vertical-offset="3342" max-vertical-offset="3944">
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -91,10 +91,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Dijkstra.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Dijkstra.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Dijkstra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2703">
+            <state line="124" column="60" selection-start="5067" selection-end="5067" vertical-scroll-proportion="0.9435216" vertical-offset="1404" max-vertical-offset="2703">
               <folding />
             </state>
           </provider>
@@ -122,8 +122,8 @@
         <option value="$PROJECT_DIR$/dijkstra.iml" />
         <option value="$PROJECT_DIR$/Edge.java" />
         <option value="$PROJECT_DIR$/Solver.java" />
-        <option value="$PROJECT_DIR$/Dijkstra.java" />
         <option value="$PROJECT_DIR$/Graph.java" />
+        <option value="$PROJECT_DIR$/Dijkstra.java" />
       </list>
     </option>
   </component>
@@ -446,15 +446,15 @@
       <workItem from="1403638189439" duration="95000" />
       <workItem from="1403638366386" duration="6643000" />
       <workItem from="1403738332922" duration="253000" />
-      <workItem from="1403803930563" duration="24640000" />
+      <workItem from="1403803930563" duration="26076000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32391000" />
+    <option name="totallyTimeSpent" value="33827000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -769,16 +769,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Dijkstra.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2703">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="180" column="21" selection-start="6407" selection-end="6407" vertical-scroll-proportion="0.028239202" vertical-offset="3043" max-vertical-offset="3944">
+        <state line="226" column="0" selection-start="7675" selection-end="7675" vertical-scroll-proportion="0.0" vertical-offset="3342" max-vertical-offset="3944">
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -789,6 +782,13 @@
             <element signature="e#6946#6952#0" expanded="true" />
             <element signature="e#7486#7492#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dijkstra.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="124" column="60" selection-start="5067" selection-end="5067" vertical-scroll-proportion="0.9435216" vertical-offset="1404" max-vertical-offset="2703">
+          <folding />
         </state>
       </provider>
     </entry>
