@@ -79,7 +79,7 @@ public class Graph
                 this.vertexEdgesArriving[edge.getHead() - 1].add(edge.getId());
                 // Adds the edge's id to its corresponding list in
                 // vertexEdgesLeaving
-                this.vertexEdgesLeaving[i + 1].add(edge.getId());
+                this.vertexEdgesLeaving[i].add(edge.getId());
             }
             i++;
         }
@@ -114,6 +114,7 @@ public class Graph
      */
     public static List<Edge>[] readEdgesArray(List<String> lines)
     {
+        // Initializes the edgesArray array of lists
         List<Edge>[] edgesArray = (ArrayList<Edge>[])new ArrayList[lines.size()];
 
         // Constructs the edgesArray array of lists of edges
@@ -122,7 +123,7 @@ public class Graph
         for(String line : lines)
         {
             // Extracts the values of the edges from each line
-            String[] values = line.split("\t");
+            String[] values = line.split(" ");
 
             // Creates the new ArrayList in position i of the edgesArray array
             // of lists of edges and adds each of the edges
@@ -135,6 +136,7 @@ public class Graph
                 Edge edge = new Edge(newEdgeId++, i + 1, headId, length);
                 edgesArray[i].add(edge);
             }
+            i++;
         }
 
         // Returns the constructed array of lists of edges

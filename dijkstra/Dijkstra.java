@@ -30,10 +30,12 @@ public class Dijkstra
     // Heap on which to store vertices not yet processed during execution
     private static PriorityQueue<Integer> heap;
 
-    // Maps vertices with their corresponding heap keys
-    private static Map<Integer,Integer> vertexHeapKey;
+    // Maps vertices with their corresponding heap keys, uses chaining in case
+    // there are multiple vertices with the same heap key (greedy score)
+    private static Map<Integer,List<Integer>> vertexHeapKey;
 
-    // Maps heap keys with their corresponding vertex ids
+    // Maps heap keys with their corresponding vertex ids. In this case there's
+    // no need for chaining since all vertices have different ids
     private static Map<Integer,Integer> heapKeyVertex;
 
     //-------------------------------------------------------------------------
@@ -77,28 +79,27 @@ public class Dijkstra
         // Mark vertex s as processed and the distance to itself as 0
         Dijkstra.x.add(s);
         Dijkstra.a[s - 1] = 0;
-        Dijkstra.vertexHeapKey.put(-1, s);
-        Dijkstra.heapKeyVertex.put(s, -1);
 
         // Walks through each vertex not yet explored, calculates its key and
         // adds it to the vertexHeapKey and heapKeyVertex HashMaps
-        for(int i = 1; i < n; i++)
+        for(int i = 2; i <= n; i++)
         {
             int vertexScore = Dijkstra.minGreedyScore(i, graph);
-            Dijkstra.heap.add(vertexScore);
-            Dijkstra.vertexHeapKey.put(vertexScore, i + 1);
-            Dijkstra.heapKeyVertex.put(i + 1, vertexScore);
+            Dijkstra.a[i - 1] = vertexScore;
+            Dijkstra.addToHeap(i, vertexScore);
         }
 
         // Walks through each vertex in the graph assigning the shortest path
         // from s to such vertex
         while(Dijkstra.x.size() < n)
         {
-            // Extracts the key for the minimum path vertex not yet explored
-            int wKey = Dijkstra.heap.poll();
-            int wId = Dijkstra.vertexHeapKey.get(wKey);
+            // Extracts the key for the minimum path vertex not yet explored,
+            // removing it from the corresponding HashMaps
+            int [] w = Dijkstra.extractFromHeap();
+            int wId = w[0];
+            int wScore = w[1];
+            Dijkstra.a[wId - 1] = wScore;
             Dijkstra.x.add(wId);
-            Dijkstra.a[wId - 1] = Dijkstra.heapKeyVertex.get(wId);
 
             // Updates key to the implicated edges (those whose tail is in X,
             // but their heads are in V - X)
@@ -111,18 +112,14 @@ public class Dijkstra
                 {
                     // Removes head vertex with id vId from the heap, updates
                     // HashMaps accordingly
-                    Dijkstra.heap.remove(vKey);
-                    Dijkstra.vertexHeapKey.remove(vKey);
-                    Dijkstra.heapKeyVertex.remove(vId);
+                    Dijkstra.deleteFromHeap(vKey);
 
                     // Recomputes the smalles greedy score for this vertex
                     int vScore = Math.min(vKey, a[wId - 1] + edge.getLength());
 
                     // Re-inserts vertex vId into the heap, updates HashMaps
                     // accordingly
-                    Dijkstra.heap.add(vScore);
-                    Dijkstra.vertexHeapKey.put(vScore, vId);
-                    Dijkstra.heapKeyVertex.put(vId, vScore);
+                    Dijkstra.addToHeap(vId, vScore);
                 }
             }
         }
@@ -157,5 +154,58 @@ public class Dijkstra
         return min;
     }
 
+    /**
+     * Adds a new value to the heap, updating the hashmaps accordingly.
+     * @param vertexId Id of vertex whose reference will be added to the heap.
+     * @param vertexScore Score to add to heap representing the given vertex.
+     */
+    private static void addToHeap(int vertexId, int vertexScore)
+    {
+        Dijkstra.heap.add(vertexScore);
+        List<Integer> vertexIds = Dijkstra.vertexHeapKey.get(vertexScore);
+        if(vertexIds == null)
+        {
+            vertexIds = new ArrayList<Integer>();
+        }
+        vertexIds.add(vertexId);
+        Dijkstra.vertexHeapKey.put(vertexScore, vertexIds);
+        Dijkstra.heapKeyVertex.put(vertexId, vertexScore);
+    }
 
+    /**
+     * Extracts the minimum score from heap, gets the corresponding vertex id
+     * and returns it. If there is more than one vertex with the same score,
+     * returns the first one in the chained list. Updates hashmaps accordingly.
+     * @return An array with vertex id and vertex score that corresponds with
+     * the min-score in the heap.
+     */
+    private static int [] extractFromHeap()
+    {
+        int [] w = new int[2];
+        int wKey = Dijkstra.heap.poll();
+        List<Integer> vertexIds = Dijkstra.vertexHeapKey.get(wKey);
+        w[0] = vertexIds.remove(0);
+        if(vertexIds.size() > 0)
+        {
+            Dijkstra.vertexHeapKey.put(wKey, vertexIds);
+        }
+        w[1] = Dijkstra.heapKeyVertex.remove(w[0]);
+        return w;
+    }
+
+    /**
+     * Removes a vertex with the specified vKey score from the heap.
+     * @param vKey Score in the heap for a vertex to remove.
+     */
+    private static void deleteFromHeap(int vKey)
+    {
+        Dijkstra.heap.remove(vKey);
+        List<Integer> vertexIds = Dijkstra.vertexHeapKey.remove(vKey);
+        int vId = vertexIds.remove(0);
+        if(vertexIds.size() > 0)
+        {
+            Dijkstra.vertexHeapKey.put(vKey, vertexIds);
+        }
+        Dijkstra.heapKeyVertex.remove(vId);
+    }
 }

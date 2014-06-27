@@ -45,15 +45,15 @@ public class Solver
         // Computes the shortest paths from vertex 1 to all other vertices in
         // the given graph. paths[i] contains the path from vertex 1 to vertex
         // with id i + 1, i in [0...n-1]
-        List<Integer> paths = Dijkstra.solve(1, graph);
+        int [] paths = Dijkstra.solve(1, graph);
 
         System.out.println("The lengths of the shortest paths from vertex 1 " +
                 "to vertices 7, 37, 59, 82, 99, 115, 133, 165, 188, 197 are:");
-        System.out.print(paths.get(6) + ", " + paths.get(36) + ", ");
-        System.out.print(paths.get(58) + ", " + paths.get(81) + ", ");
-        System.out.print(paths.get(98) + ", " + paths.get(114) + ", ");
-        System.out.print(paths.get(132) + ", " + paths.get(164) + ", ");
-        System.out.print(paths.get(187) + ", " + paths.get(196) + ".");
+        System.out.print(paths[6] + ", " + paths[36] + ", ");
+        System.out.print(paths[58] + ", " + paths[81] + ", ");
+        System.out.print(paths[98] + ", " + paths[114] + ", ");
+        System.out.print(paths[132] + ", " + paths[164] + ", ");
+        System.out.print(paths[187] + ", " + paths[196] + ".");
     }
 
     /**
