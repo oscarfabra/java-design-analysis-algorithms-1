@@ -48,9 +48,18 @@ public class Solver
         List<Integer>[] largestSccs = Connected.findLargestSccs(graph);
 
         // Shows the sizes of the largest SCCs
-        System.out.println("The size and actual vertices of the largest " +
-                "strongly connected components are: ");
-        show(largestSccs);
+        System.out.println("The sizes of the largest strongly connected " +
+                "components are: ");
+        int i = 0;
+        for(List<Integer> scc : largestSccs)
+        {
+            System.out.print(scc.size());
+            System.out.println((i != largestSccs.length - 1)?", ":".");
+            i++;
+        }
+
+        // Shows the actual vertices that comprise the obtained SCCs
+        // show(largestSccs);
     }
 
     /**
@@ -62,15 +71,17 @@ public class Solver
      */
     private static void show(List<Integer>[] largestSccs)
     {
+        int k = 1;
         for(List<Integer> scc : largestSccs)
         {
-            System.out.print("Size: " + scc.size() + ", ");
-            /*System.out.print("Vertices: ");
+            System.out.println("SCC " + k + ": ");
+            System.out.print("-- Vertices: ");
             for(int i = 1; i <= scc.size(); i++)
             {
                 System.out.print(scc.get(i - 1));
                 System.out.print((i != scc.size())?", ":"\n");
-            }*/
+            }
+            k++;
         }
     }
 

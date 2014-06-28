@@ -1,6 +1,6 @@
 /**
  * $Id: Graph.java, v 1.1 3/06/14 20:42 oscarfabra Exp $
- * {@code Graph} Represents an directed graph with n vertices and m edges.
+ * {@code Graph} Represents a directed graph with n vertices and m edges.
  *
  * @author <a href="mailto:oscarfabra@gmail.com">Oscar Fabra</a>
  * @version 1.2
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Represents an directed graph with n vertices and m edges.
+ * Represents a directed graph with n vertices and m edges.
  */
 public class Graph
 {
@@ -38,13 +38,6 @@ public class Graph
 
     // Vertices for each finishing time, finishingVertices.size() = n
     private List<Integer> finishingVertices;
-
-    // Map of arrays of size 2 used to get head vertices faster.
-    // vertexEdgesIndices.get(i) returns an array v[] of size 2 containing:
-    // v[0] => starting index in which to find mentions of vertex i + 1 in E
-    // v[1] => number of occurrences of vertex i + 1 in E, assuming all of them
-    // are found after index v[0] of E.
-    private Map<Integer, int[]> vertexEdgesIndices;
 
     //-------------------------------------------------------------------------
     // CONSTRUCTORS
@@ -74,21 +67,11 @@ public class Graph
         int newEdgeId = 1;
         this.E = new Vector<Edge>();
         System.out.println("-- Initializing list of edges E...");
-        this.vertexEdgesIndices = new HashMap<Integer, int[]>();
         for(int i = 0; i < n; i++)
         {
-            List<Integer> vertexHeads = adj.get(i + 1);
-            // Array of size 2 used to store starting index of vertex i + 1
-            // in E at v[0], and number of occurrences of such vertex as tail
-            // vertex in E at v[1], assuming all of them are found after index
-            // v[0] in E.
-            int [] v = new int[2];
-            v[0] = newEdgeId - 1;
-            v[1] = vertexHeads.size();
-            this.vertexEdgesIndices.put(i + 1, v);
-
             // Walks through list vertexHeads assigning the respective head
             // vertices of vertex i + 1
+            List<Integer> vertexHeads = adj.get(i + 1);
             for(int j = 0; j < vertexHeads.size(); j++)
             {
                 Edge edge = new Edge(newEdgeId++, i + 1, vertexHeads.get(j));
@@ -163,10 +146,6 @@ public class Graph
 
         // Copies the finishingVertices list
         this.finishingVertices = new Vector<Integer>(that.finishingVertices);
-
-        // Copies the vertexEdgesIndices list
-        this.vertexEdgesIndices = new
-                HashMap<Integer, int[]>(that.vertexEdgesIndices);
     }
 
     /**
@@ -269,42 +248,12 @@ public class Graph
      */
     public Vertex [] getHeadVertices(int vertexId)
     {
-        // Counts the number of head vertices whose tail is the vertex with id
-        // vertexId, to know what length to assign to Vertex array adj
-        boolean hasHeadVertices = true;
-        int [] v = new int[2];
-        try
-        {
-            v = this.vertexEdgesIndices.get(vertexId);
-        }
-        catch(Error error){ hasHeadVertices = false; }
-
-        // Returns an empty array if current vertex doesn't have any adjacent
-        // vertices
-        if(!hasHeadVertices || v[1] == 0){ return new Vertex[0]; }
-
-        int k = 0;
-        for(int i = v[0]; i < v[0] + v[1]; i++)
-        {
-            if(this.E.get(i).getTail() == vertexId){ k++; }
-        }
-
-        // Returns an empty array if current vertex isn't a tail for any other
-        // vertex
-        if(k == 0){ return new Vertex[0]; }
-
         // Walks through the list of edges adjacent to the vertex and forms a
         // list with the head vertices of such edges
-        Vertex [] adj = new Vertex[k];
-        k = 0;
-        for(int i = v[0]; i < v[0] + v[1]; i++)
-        {
-            Edge edge = this.E.get(i);
-            if(edge.getTail() == vertexId)
-            {
-                adj[k++] = this.V.get(edge.getHead() - 1);
-            }
-        }
+        Vertex [] adj = new Vertex[this.n];
+
+        // TODO: Get head vertices...
+
         return adj;
     }
 }
