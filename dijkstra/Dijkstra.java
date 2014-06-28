@@ -107,12 +107,14 @@ public class Dijkstra
             for(Edge edge : edgesLeaving)
             {
                 int vId = edge.getHead();
-                int vKey = Dijkstra.heapKeyVertex.get(vId);
                 if(!Dijkstra.x.contains(vId))
                 {
+                    // If vId is not in X, then it is in the heap
+                    int vKey = Dijkstra.heapKeyVertex.get(vId);
+
                     // Removes head vertex with id vId from the heap, updates
                     // HashMaps accordingly
-                    Dijkstra.deleteFromHeap(vKey);
+                    Dijkstra.deleteFromHeap(vKey, vId);
 
                     // Recomputes the smalles greedy score for this vertex
                     int vScore = Math.min(vKey, a[wId - 1] + edge.getLength());
@@ -194,14 +196,16 @@ public class Dijkstra
     }
 
     /**
-     * Removes a vertex with the specified vKey score from the heap.
+     * Removes the vertex with the specified vKey and vId from the heap,
+     * updating hashmaps accordingly.
      * @param vKey Score in the heap for a vertex to remove.
+     * @param vId Id of the vertex to remove from the heap.
      */
-    private static void deleteFromHeap(int vKey)
+    private static void deleteFromHeap(int vKey, int vId)
     {
         Dijkstra.heap.remove(vKey);
         List<Integer> vertexIds = Dijkstra.vertexHeapKey.remove(vKey);
-        int vId = vertexIds.remove(0);
+        vertexIds.remove(Integer.valueOf(vId));
         if(vertexIds.size() > 0)
         {
             Dijkstra.vertexHeapKey.put(vKey, vertexIds);

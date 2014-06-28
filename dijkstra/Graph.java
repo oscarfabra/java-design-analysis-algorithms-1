@@ -123,7 +123,7 @@ public class Graph
         for(String line : lines)
         {
             // Extracts the values of the edges from each line
-            String[] values = line.split(" ");
+            String[] values = line.split("\t");
 
             // Creates the new ArrayList in position i of the edgesArray array
             // of lists of edges and adds each of the edges
