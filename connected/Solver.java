@@ -37,12 +37,9 @@ public class Solver
                 Graph.buildVertexEndpoints(lines);
         System.out.println("...finished building endpoints lists.");
 
-        // Gets the number of vertices V
-        int V = vertexEndpoints.size();
-
         // Creates a new Graph
         System.out.println("Building new Graph object...");
-        Graph graph = new Graph(V, vertexEndpoints);
+        Graph graph = new Graph(vertexEndpoints);
         System.out.println("...new Graph object built.");
 
         // Finds its 5 largest SCCs (Strongly connected components)

@@ -102,9 +102,9 @@ public class Connected
     {
         // Obtains a graph with the same nodes as graph but with its edges in
         // reverse order
-        System.out.print("-- Reversing graph...");
-        Graph graphRev = reverseGraph(graph);
-        System.out.println("done.");
+        System.out.println("-- Reversing graph...");
+        Graph graphRev = graph.reverseGraph();
+        System.out.println("-- graph reversed.");
 
         // Computes and sets the finishing times for each of the vertices in
         // the given graph using the reversed graph
@@ -119,29 +119,6 @@ public class Connected
         System.out.println("-- ...finished discovering SCCs.");
 
         return sccs;
-    }
-
-    /**
-     * Creates a new Graph with the same vertices as the given graph but with
-     * its edges reversed.
-     * @param graph Graph to reverse the edges for.
-     * @return A graph with the same vertices as the given graph but with its
-     * edges reversed.
-     */
-    private static Graph reverseGraph(Graph graph)
-    {
-        Graph graphRev = new Graph(graph);
-
-        // Creates a reversed edge for each edge of the given graph in E and
-        // assigns it to graphRev in the corresponding position
-        for(int i = 0; i < graph.getM(); i++)
-        {
-            Edge edge = graph.getEdgeByIndex(i);
-            Edge edgeRev = new Edge(edge.getId(), edge.getHead(),
-                    edge.getTail());
-            graphRev.setEdgeByIndex(i, edgeRev);
-        }
-        return graphRev;
     }
 
     /**

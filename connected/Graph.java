@@ -24,15 +24,13 @@ public class Graph
     // Number of edges, m = E.size()
     private int m;
 
-    // List of vertices
-    private List<Vertex> V;
+    // Map of vertices with (vertexId, Vertex) pairs
+    private Map<Integer,Vertex> V;
 
     // List of edges
     private List<Edge> E;
 
-    // Map of lists of vertices that indicates endpoints of each vertex,
-    // vertexEndpoints[i] contains the ids of the vertices to where the vertex
-    // with id i + 1 points at, i in [0...n-1]
+    // Map of lists of vertices that indicates endpoints of each vertex
     private Map<Integer,List<Integer>> vertexEndpoints;
 
     // Finishing times of each vertex, finishingTimes.size() = n
@@ -46,39 +44,32 @@ public class Graph
     //-------------------------------------------------------------------------
 
     /**
-     * Creates a new graph from the given parameters.
-     * <b>Pre: </b> The Vertex class has been initialized with Vertex.init()
-     * @param n Number of vertices of the graph.
+     * Creates a new graph from the given map of head vertices of each vertex.
      * @param vertexEndpoints Map of Lists with the endpoints of each vertex.
      */
-    public Graph(int n, Map<Integer, List<Integer>> vertexEndpoints)
+    public Graph(Map<Integer, List<Integer>> vertexEndpoints)
     {
-        // Initializes the list of vertices, O(n) algorithm
-        this.n = n;
-        int newVertexId = 1;
-        this.V = new ArrayList<Vertex>(n);
+        // Initializes the map of vertices, O(n) algorithm
+        this.V = new HashMap<Integer, Vertex>();
         System.out.print("-- Initializing list of vertices V...");
-        for(int i = 0; i < n; i++)
+        for(Integer key : vertexEndpoints.keySet())
         {
-            this.V.add(i, new Vertex(newVertexId++));
+            this.V.put(key, new Vertex(key));
         }
+        this.n = this.V.size();
         System.out.println("done.");
 
         // Initializes the list of edges and vertexEdgesIndices, O(n*m) algorithm
-        this.m = 0;
         int newEdgeId = 1;
         this.E = new ArrayList<Edge>(n * 2);
         System.out.println("-- Initializing list of edges E...");
-        for(int i = 0; i < n; i++)
+        for(Integer key : vertexEndpoints.keySet())
         {
-            // Walks through list vertexHeads assigning the respective head
-            // vertices of vertex i + 1
-            List<Integer> vertexHeads = vertexEndpoints.get(i + 1);
-            for(int j = 0; j < vertexHeads.size(); j++)
+            // Walks through list vertexHeads creating the appropriate edges
+            for(Integer head : vertexEndpoints.get(key))
             {
-                Edge edge = new Edge(newEdgeId++, i + 1, vertexHeads.get(j));
+                Edge edge = new Edge(newEdgeId++, key, head);
                 this.E.add(edge);
-                this.m++;
 
                 // Message in standard output for logging purposes
                 if((newEdgeId % 20000) == 0)
@@ -87,6 +78,7 @@ public class Graph
                 }
             }
         }
+        this.m = this.E.size();
         System.out.println("-- ...list of edges E initialized.");
 
         // Initializes the vertexEndpoints HashMap
@@ -142,7 +134,6 @@ public class Graph
             List<String> edges)
     {
         // Walks through the given list of strings constructing the hashmap
-        System.out.println("-- Initializing endPoints hashmap...");
         Map<Integer, List<Integer>> vertexEndpoints = new HashMap<Integer,
                 List<Integer>>();
         for(int i = 0; i < edges.size(); i++)
@@ -162,8 +153,6 @@ public class Graph
                 System.out.println("---- "+(i + 1)+" endPoints stored.");
             }
         }
-        System.out.println("-- ...endPoints hashmap initialized.");
-
         return vertexEndpoints;
     }
 
@@ -200,10 +189,10 @@ public class Graph
     {
         // Copies the list of vertices
         this.n = that.n;
-        this.V = new ArrayList<Vertex>(this.n);
-        for(int i = 0; i < that.V.size(); i++)
+        this.V = new HashMap<Integer, Vertex>(this.n);
+        for(Integer key : that.V.keySet())
         {
-            this.V.add(new Vertex(that.V.get(i)));
+            this.V.put(key,that.V.get(key));
         }
 
         // Copies the list of edges
@@ -226,6 +215,29 @@ public class Graph
 
         // Copies the finishingVertices list
         this.finishingVertices = new ArrayList<Integer>(that.finishingVertices);
+    }
+
+    /**
+     * Creates a new Graph with the same vertices as this graph but with its
+     * edges reversed.
+     * @return A graph with the same vertices as this graph but with its edges
+     * reversed.
+     */
+    public Graph reverseGraph()
+    {
+        // Gets vertexEndpoints hashmap with reversed vertices
+        Map<Integer,List<Integer>> vertexEndpoints =
+                new HashMap<Integer, List<Integer>>(this.n);
+        for(Integer key : this.vertexEndpoints.keySet())
+        {
+            for(Integer head : this.vertexEndpoints.get(key))
+            {
+                // Adds a new entry in the hashmap in reverse order
+                Graph.addVertexEndpoint(vertexEndpoints, head, key);
+            }
+        }
+        // Creates and returns the graph with its edges reversed
+        return new Graph(vertexEndpoints);
     }
 
     /**
@@ -257,34 +269,14 @@ public class Graph
     }
 
     /**
-     * Gets an Edge from E by its index number.
-     * @param edgeIndex Index number of the edge in E.
-     * @return The Edge object.
-     */
-    public Edge getEdgeByIndex(int edgeIndex)
-    {
-        return this.E.get(edgeIndex);
-    }
-
-    /**
-     * Sets the Edge from E by its index number.
-     * @param edgeIndex Index number of the edge in E.
-     * @param edge Edge object to put in the given position.
-     */
-    public void setEdgeByIndex(int edgeIndex, Edge edge)
-    {
-        this.E.set(edgeIndex, edge);
-    }
-
-    /**
      * Sets the vertex with the given id as explored in V.
      * @param vertexId Id of the vertex to look for.
      */
     public void setVertexAsExplored(int vertexId)
     {
-        Vertex vertex = this.V.get(vertexId - 1);
+        Vertex vertex = this.V.get(vertexId);
         vertex.setExplored();
-        this.V.set(vertexId - 1, vertex);
+        this.V.put(vertexId, vertex);
     }
 
     /**
@@ -330,11 +322,10 @@ public class Graph
     {
         // Walks through the list of vertices head of the vertex with the
         // given id
-        List<Vertex> headVertices = new ArrayList<Vertex>((int)
-                Math.ceil(this.n / 100));
+        List<Vertex> headVertices = new ArrayList<Vertex>();
         for(Integer wId : this.vertexEndpoints.get(vertexId))
         {
-            headVertices.add(this.getVertexByIndex(wId - 1));
+            headVertices.add(this.V.get(wId));
         }
         return headVertices;
     }
