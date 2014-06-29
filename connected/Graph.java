@@ -7,10 +7,7 @@
  * @since 3/06/14
  */
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Represents a directed graph with n vertices and m edges.
@@ -33,6 +30,11 @@ public class Graph
     // List of edges
     private List<Edge> E;
 
+    // Map of lists of vertices that indicates endpoints of each vertex,
+    // vertexEndpoints[i] contains the ids of the vertices to where the vertex
+    // with id i + 1 points at, i in [0...n-1]
+    private Map<Integer,List<Integer>> vertexEndpoints;
+
     // Finishing times of each vertex, finishingTimes.size() = n
     private List<Integer> finishingTimes;
 
@@ -47,14 +49,14 @@ public class Graph
      * Creates a new graph from the given parameters.
      * <b>Pre: </b> The Vertex class has been initialized with Vertex.init()
      * @param n Number of vertices of the graph.
-     * @param adj Map of Lists with the adjacent vertices of each vertex.
+     * @param vertexEndpoints Map of Lists with the endpoints of each vertex.
      */
-    public Graph(int n, Map<Integer, List<Integer>> adj)
+    public Graph(int n, Map<Integer, List<Integer>> vertexEndpoints)
     {
         // Initializes the list of vertices, O(n) algorithm
         this.n = n;
         int newVertexId = 1;
-        this.V = new Vector<Vertex>(n);
+        this.V = new ArrayList<Vertex>(n);
         System.out.print("-- Initializing list of vertices V...");
         for(int i = 0; i < n; i++)
         {
@@ -65,13 +67,13 @@ public class Graph
         // Initializes the list of edges and vertexEdgesIndices, O(n*m) algorithm
         this.m = 0;
         int newEdgeId = 1;
-        this.E = new Vector<Edge>();
+        this.E = new ArrayList<Edge>(n * 2);
         System.out.println("-- Initializing list of edges E...");
         for(int i = 0; i < n; i++)
         {
             // Walks through list vertexHeads assigning the respective head
             // vertices of vertex i + 1
-            List<Integer> vertexHeads = adj.get(i + 1);
+            List<Integer> vertexHeads = vertexEndpoints.get(i + 1);
             for(int j = 0; j < vertexHeads.size(); j++)
             {
                 Edge edge = new Edge(newEdgeId++, i + 1, vertexHeads.get(j));
@@ -87,8 +89,15 @@ public class Graph
         }
         System.out.println("-- ...list of edges E initialized.");
 
-        // Initializes the finishingTimes Vector.
-        this.finishingTimes = new Vector<Integer>(this.n);
+        // Initializes the vertexEndpoints HashMap
+        this.vertexEndpoints = new HashMap<Integer, List<Integer>>(this.n);
+        for(Integer key : vertexEndpoints.keySet())
+        {
+            this.vertexEndpoints.put(key, vertexEndpoints.get(key));
+        }
+
+        // Initializes the finishingTimes list.
+        this.finishingTimes = new ArrayList<Integer>(this.n);
         System.out.print("-- Initializing finishingTimes list...");
         for(int i = 0; i < n; i++)
         {
@@ -96,8 +105,8 @@ public class Graph
         }
         System.out.println("done.");
 
-        // Initializes the finishingVertices Vector.
-        this.finishingVertices = new Vector<Integer>(this.n);
+        // Initializes the finishingVertices list.
+        this.finishingVertices = new ArrayList<Integer>(this.n);
         System.out.print("-- Initializing finishingVertices list...");
         for(int i = 0; i < n; i++)
         {
@@ -116,6 +125,70 @@ public class Graph
     }
 
     //-------------------------------------------------------------------------
+    // CLASS METHODS
+    //-------------------------------------------------------------------------
+
+    /**
+     * Extracts the corresponding adjacency lists to initialize a new Graph
+     * from the given list of edges.
+     * <b>Pre: </b>The input format must be a list of String, each in the form
+     * "a b" where a is the tail and b the head of each edge, a, b in [1...n].
+     * <br/>
+     * @param edges List of String, each with the head and tail of each edge.
+     * @return Array of lists of Integers with the adjacent vertices of each
+     * vertex.
+     */
+    public static Map<Integer, List<Integer>> buildVertexEndpoints(
+            List<String> edges)
+    {
+        // Walks through the given list of strings constructing the hashmap
+        System.out.println("-- Initializing endPoints hashmap...");
+        Map<Integer, List<Integer>> vertexEndpoints = new HashMap<Integer,
+                List<Integer>>();
+        for(int i = 0; i < edges.size(); i++)
+        {
+            // Extracts and adds the corresponding pair (key, value of list) to
+            // the hashmap. Each pair (key, list) in the hashmap is the id of a
+            // vertex, and the list of head vertices that come out from it
+            String edge = edges.get(i);
+            String[] vertices = edge.split(" ");
+            int key = Integer.parseInt(vertices[0]);
+            int value = Integer.parseInt(vertices[1]);
+            Graph.addVertexEndpoint(vertexEndpoints, key, value);
+
+            // Message in standard output for logging purposes
+            if((i + 1) % 20000 == 0)
+            {
+                System.out.println("---- "+(i + 1)+" endPoints stored.");
+            }
+        }
+        System.out.println("-- ...endPoints hashmap initialized.");
+
+        return vertexEndpoints;
+    }
+
+    /**
+     * Adds a key and value to the given map. The value is added to the chained
+     * list of the given key.
+     * @param vertexEndpoints Map to add the value to.
+     * @param key Key of the list on which to add the given value.
+     * @param value Value to add to the list of the given key in the map.
+     */
+    private static void addVertexEndpoint(Map<Integer, List<Integer>> vertexEndpoints,
+                                          int key, int value)
+    {
+        // Removes the list of the given key, adds the value, and puts it
+        // again
+        List<Integer> headVertices = vertexEndpoints.remove(key);
+        if(headVertices == null)
+        {
+            headVertices = new ArrayList<Integer>();
+        }
+        headVertices.add(value);
+        vertexEndpoints.put(key, headVertices);
+    }
+
+    //-------------------------------------------------------------------------
     // PUBLIC METHODS
     //-------------------------------------------------------------------------
 
@@ -127,7 +200,7 @@ public class Graph
     {
         // Copies the list of vertices
         this.n = that.n;
-        this.V = new Vector<Vertex>();
+        this.V = new ArrayList<Vertex>(this.n);
         for(int i = 0; i < that.V.size(); i++)
         {
             this.V.add(new Vertex(that.V.get(i)));
@@ -135,17 +208,24 @@ public class Graph
 
         // Copies the list of edges
         this.m = that.m;
-        this.E = new Vector<Edge>();
+        this.E = new ArrayList<Edge>(this.n * 2);
         for(int i = 0; i < that.E.size(); i++)
         {
             this.E.add(new Edge(that.E.get(i)));
         }
 
+        // Initializes the vertexEndpoints HashMap
+        this.vertexEndpoints = new HashMap<Integer, List<Integer>>(this.n);
+        for(Integer key : that.vertexEndpoints.keySet())
+        {
+            this.vertexEndpoints.put(key,that.vertexEndpoints.get(key));
+        }
+
         // Copies the finishingTimes list
-        this.finishingTimes = new Vector<Integer>(that.finishingTimes);
+        this.finishingTimes = new ArrayList<Integer>(that.finishingTimes);
 
         // Copies the finishingVertices list
-        this.finishingVertices = new Vector<Integer>(that.finishingVertices);
+        this.finishingVertices = new ArrayList<Integer>(that.finishingVertices);
     }
 
     /**
@@ -244,16 +324,18 @@ public class Graph
      * points at.
      * @param vertexId Id of the vertex to look for.
      * @return List of vertices to where the vertex with the given id points
-     * to.
+     * at.
      */
-    public Vertex [] getHeadVertices(int vertexId)
+    public List<Vertex> getHeadVertices(int vertexId)
     {
-        // Walks through the list of edges adjacent to the vertex and forms a
-        // list with the head vertices of such edges
-        Vertex [] adj = new Vertex[this.n];
-
-        // TODO: Get head vertices...
-
-        return adj;
+        // Walks through the list of vertices head of the vertex with the
+        // given id
+        List<Vertex> headVertices = new ArrayList<Vertex>((int)
+                Math.ceil(this.n / 100));
+        for(Integer wId : this.vertexEndpoints.get(vertexId))
+        {
+            headVertices.add(this.getVertexByIndex(wId - 1));
+        }
+        return headVertices;
     }
 }

@@ -32,16 +32,17 @@ public class Solver
      */
     private static void solve(List<String> lines)
     {
-        System.out.println("Building adjacency lists for each vertex...");
-        Map<Integer,List<Integer>> adj = Connected.buildAdjacencyLists(lines);
-        System.out.println("...finished building adjacency lists.");
+        System.out.println("Building endpoints list for each vertex...");
+        Map<Integer,List<Integer>> vertexEndpoints =
+                Graph.buildVertexEndpoints(lines);
+        System.out.println("...finished building endpoints lists.");
 
         // Gets the number of vertices V
-        int V = adj.size();
+        int V = vertexEndpoints.size();
 
         // Creates a new Graph
         System.out.println("Building new Graph object...");
-        Graph graph = new Graph(V, adj);
+        Graph graph = new Graph(V, vertexEndpoints);
         System.out.println("...new Graph object built.");
 
         // Finds its 5 largest SCCs (Strongly connected components)

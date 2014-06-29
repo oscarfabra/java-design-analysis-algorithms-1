@@ -1,7 +1,7 @@
 /**
  * $Id: Connected.java, v 1.0 13/06/2014 18:31 oscarfabra Exp $
  * {@code Connected} Is a class used to compute the largest strongly connected
- * components of any given graph.
+ * components of any given graph. <br/>
  *
  * @author <a href="mailto:oscarfabra@gmail.com">Oscar Fabra</a>
  * @version 1.0
@@ -29,13 +29,6 @@ public class Connected
     // Vertex used to know the leaders in the second pass of the depth-first
     // search (DFS)
     private static int s = 0;
-
-    // Map of arrays of size 2 used to get head vertices faster.
-    // indices.get(i) returns an array v[] of size 2 containing:
-    // v[0] => starting index in which to find mentions of vertex i + 1 in edges
-    // v[1] => occurrences of vertex i + 1 in edges, assuming all of them
-    // are found after index v[0] of edges.
-    private static Map<Integer, int[]> indices;
 
     // Map to store the strongly-connected components (SCCs) as they are being
     // found. Keys are leader vertices. Values are lists of the ids of the
@@ -67,7 +60,9 @@ public class Connected
     {
         // Finds all SCCs of the given graph and returns a list with the ids of
         // each of the vertices that comprise them.
+        System.out.println("Finding all SCCs...");
         findAllSccs(graph);
+        System.out.println("...all SCCs found.");
 
         // Sorts the array of SCCs according to their respective sizes using
         // quicksort and returns an array of keys with the sorted order of
@@ -92,129 +87,9 @@ public class Connected
         return largestSccs;
     }
 
-    /**
-     * Extracts the corresponding adjacency lists to initialize a new Graph
-     * from the given list of edges. The input format must be a list of String,
-     * each in the form "a b" where a is the tail and b the head of each edge,
-     * a, b in [1...n]. <br/>
-     * <b>Pre: </b> Any given starting point in edges a is found after the
-     * first mention of a (i.e. there's no disorganized edge in the given list)
-     * @param edges List of String, each with the head and tail of each edge.
-     * @return Array of lists of Integers with the adjacent vertices of each
-     * vertex.
-     */
-    public static Map<Integer, List<Integer>> buildAdjacencyLists(
-            List<String> edges)
-    {
-        Connected.indices = new HashMap<Integer, int[]>();
-        int tailId = 0;
-        int edgeIndex = 0;
-        int n = 0;
-
-        // Stores the values from the given list into a matrix of vertex ids
-        System.out.println("-- Initializing endPoints matrix...");
-        int [][] endPoints = new int[edges.size()][2];
-        for(int i = 0; i < edges.size(); i++)
-        {
-            String edge = edges.get(i);
-            String[] vertices = edge.split(" ");
-            endPoints[i][0] = Integer.parseInt(vertices[0]);
-            endPoints[i][1] = Integer.parseInt(vertices[1]);
-
-            // Operations done to build the corresponding indices arrays v
-            if(tailId != endPoints[i][0])
-            {
-                // Adds a new value in the indices list
-                if(i != 0)
-                {
-                    addEndPointsIndex(tailId, edgeIndex, n);
-                }
-                // Updates variables
-                tailId++;
-                edgeIndex = i;
-                n = 0;
-            }
-            n++;
-            // Message in standard output for logging purposes
-            if((i + 1)%20000==0)
-            {
-                System.out.println("---- "+(i + 1)+" endPoints built.");
-            }
-        }
-        // Adds the last value for the indices list of arrays
-        addEndPointsIndex(tailId, edgeIndex, n);
-        System.out.println("-- ...endPoints matrix initialized.");
-
-        // Finds the number of vertices n as the max of the numbers in the list
-        // assuming biggest number is in the last 20% of elements
-        n = 0;
-        System.out.print("-- Finding vertices number n...");
-        for(int i = (endPoints.length / 5) * 4; i < endPoints.length; i++)
-        {
-            int v = Math.max(endPoints[i][0],endPoints[i][1]);
-            n = Math.max(n, v);
-        }
-        System.out.println("done.");
-
-        // Initializes the adjacency array of vectors
-        System.out.print("-- Initializing hashmap of adjacency lists...");
-        Map<Integer, List<Integer>> adj = new HashMap<Integer, List<Integer>>(n);
-        System.out.println("done.");
-
-        // Assigns each of the adjacency lists. adj[i] contains the adjacent
-        // vertices of vertex i + 1, i in [0...n-1]
-        for(int i = 0; i < n; i++)
-        {
-            adj.put(i + 1, buildAdjacencyList(i + 1, endPoints));
-            // Message in standard output for logging purposes
-            if((i + 1)%20000==0)
-            {
-                System.out.println("---- "+(i + 1)+" adjacency lists built.");
-            }
-        }
-        return adj;
-    }
-
     //-------------------------------------------------------------------------
     // PRIVATE HELPER METHODS
     //-------------------------------------------------------------------------
-
-    /**
-     * Adds a new array of size 2 with the inidices map for faster retrieval of
-     * data from the endPoints matrix.
-     * @param tailId Id of the tail vertex of the set of edges to add.
-     * @param edgeIndex Index of a new set of edges with the same head vertex.
-     * @param n Number of such edges following the one at position edgeIndex.
-     */
-    private static void addEndPointsIndex(int tailId, int edgeIndex, int n)
-    {
-        // Creates the new array v and adds it to the indices map
-        int [] v = new int[2];
-        v[0] = edgeIndex;
-        v[1] = n;
-        Connected.indices.put(tailId, v);
-    }
-
-    /**
-     * Builds the adjacency list of a given vertex.
-     * @param vertexId Number of the vertex to look for, vertexId in [1...n].
-     * @param endPoints Matrix of integers; head and tail of each edge.
-     * @return Adjacency list of vertex u.
-     */
-    private static List<Integer> buildAdjacencyList(int vertexId,
-                                                    int[][] endPoints)
-    {
-        List<Integer> list = new Vector<Integer>();
-        int [] v = Connected.indices.get(vertexId);
-        for(int i = v[0]; i < v[0] + v[1]; i++)
-        {
-            if(endPoints[i][0] == vertexId)
-            {
-                list.add(endPoints[i][1]);
-            }
-        }
-        return list;
-    }
 
     /**
      * Finds all the strongly connected components (SCCs) of the given graph
@@ -227,21 +102,21 @@ public class Connected
     {
         // Obtains a graph with the same nodes as graph but with its edges in
         // reverse order
-        System.out.print("Reversing graph...");
+        System.out.print("-- Reversing graph...");
         Graph graphRev = reverseGraph(graph);
         System.out.println("done.");
 
         // Computes and sets the finishing times for each of the vertices in
         // the given graph using the reversed graph
-        System.out.println("Computing magical ordering...");
+        System.out.println("-- Computing magical ordering...");
         setMagicalOrdering(graph, graphRev);
-        System.out.println("...finished computing magical ordering.");
+        System.out.println("-- ...finished computing magical ordering.");
 
         // Gets the SCCs one by one processing vertices in decreasing order of
         // finishing times
-        System.out.println("Discovering SCCs...");
+        System.out.println("-- Discovering SCCs...");
         Map<Integer, List<Integer>> sccs = discoverSccs(graph);
-        System.out.println("...finished discovering SCCs.");
+        System.out.println("-- ...finished discovering SCCs.");
 
         return sccs;
     }
@@ -282,7 +157,7 @@ public class Connected
         Connected.t = 0;
 
         // Gets the finishing times for each vertex of graphRev
-        System.out.println("-- Getting finishing times for each vertex in " +
+        System.out.println("---- Getting finishing times for each vertex in " +
                 "graphRev...");
         for(int i = graphRev.getN(); i > 0; i--)
         {
@@ -293,14 +168,14 @@ public class Connected
             // Shows a message for logging purposes
             if((graphRev.getN() - i + 1) % 20000 == 0)
             {
-                System.out.println("---- "+ (graphRev.getN() - i + 1) +
+                System.out.println("------ "+ (graphRev.getN() - i + 1) +
                         " finishing times setup.");
             }
         }
-        System.out.println("-- ...finished getting times for vertices.");
+        System.out.println("---- ...finished getting times for vertices.");
 
         // Updates graph with the corresponding finishing times from graphRev
-        System.out.print("-- Updating finishing times in graph...");
+        System.out.print("---- Updating finishing times in graph...");
         for(int i = 0; i < graphRev.getN(); i++)
         {
             int f = graphRev.getFinishingTime(i);
