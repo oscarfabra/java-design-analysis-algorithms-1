@@ -52,7 +52,7 @@ public class Solver
         for(List<Integer> scc : largestSccs)
         {
             System.out.print(scc.size());
-            System.out.println((i != largestSccs.length - 1)?", ":".");
+            System.out.print((i != largestSccs.length - 1)?", ":".");
             i++;
         }
 

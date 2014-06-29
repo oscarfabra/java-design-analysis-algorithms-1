@@ -138,7 +138,8 @@ public class Connected
                 "graphRev...");
         for(int i = graphRev.getN(); i > 0; i--)
         {
-            if(!graphRev.getVertexByIndex(i - 1).isExplored())
+            Vertex vertex = graphRev.getVertex(i);
+            if(vertex != null && !vertex.isExplored())
             {
                 DFSForFinishingTimes(graphRev, i);
             }
@@ -153,7 +154,7 @@ public class Connected
 
         // Updates graph with the corresponding finishing times from graphRev
         System.out.print("---- Updating finishing times in graph...");
-        for(int i = 0; i < graphRev.getN(); i++)
+        for(int i = 1; i <= graphRev.getN(); i++)
         {
             int f = graphRev.getFinishingTime(i);
             graph.setFinishingTime(i, f);
@@ -177,8 +178,15 @@ public class Connected
         // Gets the finishing times for each vertex of graph
         for(int t = graph.getN(); t > 0; t--)
         {
-            int vertexId = graph.getVertexByFinishingTime(t).getId();
-            if(!graph.getVertexByIndex(vertexId - 1).isExplored())
+            // Gets the vertex by its finishing time
+            int vertexId = -1;
+            Vertex vertex = graph.getVertexByFinishingTime(t);
+            if(vertex != null)
+            {
+                vertexId = vertex.getId();
+            }
+
+            if(!vertex.isExplored())
             {
                 // Initializes the scc that is about to be built
                 Connected.scc = new LinkedList<Integer>();
@@ -189,14 +197,14 @@ public class Connected
                 DFSForFindingLeaders(graph, vertexId);
                 // Adds only sccs of size at least 3, for performance issues.
                 // Change if required.
-                if(Connected.scc.size() >= 3)
-                {
+                // if(Connected.scc.size() >= 3)
+                // {
                     Connected.sccs.put(Connected.s, Connected.scc);
                     // Shows a message in standard output for logging purposes
                     System.out.print("---- "+ Connected.sccs.size());
                     System.out.println((Connected.sccs.size() > 1)? " SCCs found.":
                             " SCC found.");
-                }
+                // }
             }
             // Shows a message for logging purposes
             if((graph.getN() - t + 1) % 100 == 0)
@@ -223,14 +231,14 @@ public class Connected
         // Walks through the adjacent vertices with depth-first search
         for(Vertex adjVertex : graphRev.getHeadVertices(vertexId))
         {
-            if(!adjVertex.isExplored())
+            if(adjVertex != null && !adjVertex.isExplored())
             {
                 DFSForFinishingTimes(graphRev, adjVertex.getId());
             }
         }
         // Sets the finishing time for the vertex with id vertexId
         Connected.t++;
-        graphRev.setFinishingTime(vertexId - 1, t);
+        graphRev.setFinishingTime(vertexId, t);
     }
 
     /**

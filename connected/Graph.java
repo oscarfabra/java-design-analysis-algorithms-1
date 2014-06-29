@@ -34,10 +34,10 @@ public class Graph
     private Map<Integer,List<Integer>> vertexEndpoints;
 
     // Finishing times of each vertex, finishingTimes.size() = n
-    private List<Integer> finishingTimes;
+    private Map<Integer,Integer> finishingTimes;
 
     // Vertices for each finishing time, finishingVertices.size() = n
-    private List<Integer> finishingVertices;
+    private Map<Integer,Integer> finishingVertices;
 
     //-------------------------------------------------------------------------
     // CONSTRUCTORS
@@ -89,22 +89,10 @@ public class Graph
         }
 
         // Initializes the finishingTimes list.
-        this.finishingTimes = new ArrayList<Integer>(this.n);
-        System.out.print("-- Initializing finishingTimes list...");
-        for(int i = 0; i < n; i++)
-        {
-            this.finishingTimes.add(0);
-        }
-        System.out.println("done.");
+        this.finishingTimes = new HashMap<Integer, Integer>(this.n);
 
         // Initializes the finishingVertices list.
-        this.finishingVertices = new ArrayList<Integer>(this.n);
-        System.out.print("-- Initializing finishingVertices list...");
-        for(int i = 0; i < n; i++)
-        {
-            this.finishingVertices.add(0);
-        }
-        System.out.println("done.");
+        this.finishingVertices = new HashMap<Integer, Integer>(this.n);
     }
 
     /**
@@ -192,7 +180,7 @@ public class Graph
         this.V = new HashMap<Integer, Vertex>(this.n);
         for(Integer key : that.V.keySet())
         {
-            this.V.put(key,that.V.get(key));
+            this.V.put(key, that.V.get(key));
         }
 
         // Copies the list of edges
@@ -211,10 +199,12 @@ public class Graph
         }
 
         // Copies the finishingTimes list
-        this.finishingTimes = new ArrayList<Integer>(that.finishingTimes);
+        this.finishingTimes = new HashMap<Integer, Integer>(this.n);
+        this.finishingTimes.putAll(that.finishingTimes);
 
         // Copies the finishingVertices list
-        this.finishingVertices = new ArrayList<Integer>(that.finishingVertices);
+        this.finishingVertices = new HashMap<Integer, Integer>(this.n);
+        this.finishingVertices.putAll(that.finishingVertices);
     }
 
     /**
@@ -259,13 +249,17 @@ public class Graph
     }
 
     /**
-     * Returns the vertex at position vertexIndex in V.
-     * @param vertexIndex Index of the vertex in list of vertices V.
-     * @return The vertex in the given position.
+     * Gets the vertex with the given id in V.
+     * @param vertexId Id of the vertex to look for.
+     * @return Vertex with the given id.
      */
-    public Vertex getVertexByIndex(int vertexIndex)
+    public Vertex getVertex(int vertexId)
     {
-        return this.V.get(vertexIndex);
+        if(!this.V.containsKey(vertexId))
+        {
+            return null;
+        }
+        return this.V.get(vertexId);
     }
 
     /**
@@ -280,24 +274,28 @@ public class Graph
     }
 
     /**
-     * Gets the finishing time of vertex with id vertexIndex + 1.
-     * @param vertexIndex Index of the vertex in list finishingTimes.
-     * @return Finishing time of the given vertex's index.
+     * Gets the finishing time of vertex with the given id.
+     * @param vertexId Id of the vertex in map finishingTimes.
+     * @return Finishing time of the given vertex.
      */
-    public int getFinishingTime(int vertexIndex)
+    public int getFinishingTime(int vertexId)
     {
-        return this.finishingTimes.get(vertexIndex);
+        if(!this.finishingTimes.containsKey(vertexId))
+        {
+            return -1;
+        }
+        return this.finishingTimes.get(vertexId);
     }
 
     /**
-     * Sets the finishing time of vertex with id vertexIndex + 1.
-     * @param vertexIndex Index of the vertex in list finishingTimes.
+     * Sets the finishing time of vertex with the given id.
+     * @param vertexId Id of the vertex in list finishingTimes.
      * @param t Finishing time to assign to such vertex.
      */
-    public void setFinishingTime(int vertexIndex, int t)
+    public void setFinishingTime(int vertexId, int t)
     {
-        this.finishingTimes.set(vertexIndex, t);
-        this.finishingVertices.set(t - 1, vertexIndex + 1);
+        this.finishingTimes.put(vertexId, t);
+        this.finishingVertices.put(t, vertexId);
     }
 
     /**
@@ -307,8 +305,13 @@ public class Graph
      */
     public Vertex getVertexByFinishingTime(int t)
     {
-        int vertexId = this.finishingVertices.get(t - 1);
-        return this.V.get(vertexId - 1);
+        if(!this.finishingVertices.containsKey(t))
+        {
+            return null;
+        }
+        // Gets the id and returns the vertex from V
+        int vertexId = this.finishingVertices.get(t);
+        return this.V.get(vertexId);
     }
 
     /**
@@ -320,6 +323,11 @@ public class Graph
      */
     public List<Vertex> getHeadVertices(int vertexId)
     {
+        // Returns null if vertex with the given id doesn't have head vertices
+        if(!this.vertexEndpoints.containsKey(vertexId))
+        {
+            return null;
+        }
         // Walks through the list of vertices head of the vertex with the
         // given id
         List<Vertex> headVertices = new ArrayList<Vertex>();
@@ -329,4 +337,5 @@ public class Graph
         }
         return headVertices;
     }
+
 }
