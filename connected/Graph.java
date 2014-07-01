@@ -28,10 +28,10 @@ public class Graph
     private Map<Integer,Vertex> V;
 
     // List of edges
-    private List<Edge> E;
+    private Map<Integer,Edge> E;
 
-    // Map of lists of vertices that indicates endpoints of each vertex
-    private Map<Integer,List<Integer>> vertexEndpoints;
+    // Map of lists of vertices that indicates leaving edges of each vertex
+    private Map<Integer,List<Integer>> vertexEdges;
 
     // Finishing times of each vertex, finishingTimes.size() = n
     private Map<Integer,Integer> finishingTimes;
@@ -59,17 +59,25 @@ public class Graph
         this.n = this.V.size();
         System.out.println("done.");
 
-        // Initializes the list of edges and vertexEdgesIndices, O(n*m) algorithm
+        // Initializes the list of edges and vertexEdges, O(n*m) algorithm
         int newEdgeId = 1;
-        this.E = new ArrayList<Edge>(n * 2);
+        this.E = new HashMap<Integer, Edge>(this.n * 2);
+        this.vertexEdges = new HashMap<Integer, List<Integer>>(this.n);
         System.out.println("-- Initializing list of edges E...");
         for(Integer key : vertexEndpoints.keySet())
         {
+            // Guarantees that there's a value for each key in V in
+            // vertexEdges, even though some might not have leaving edges
+            if(vertexEndpoints.get(key).size() == 0)
+            {
+                this.vertexEdges.put(key, new ArrayList<Integer>());
+            }
             // Walks through list vertexHeads creating the appropriate edges
             for(Integer head : vertexEndpoints.get(key))
             {
-                Edge edge = new Edge(newEdgeId++, key, head);
-                this.E.add(edge);
+                Edge edge = new Edge(newEdgeId, key, head);
+                this.E.put(newEdgeId, edge);
+                this.addVertexEdge(key, newEdgeId++);
 
                 // Message in standard output for logging purposes
                 if((newEdgeId % 20000) == 0)
@@ -80,13 +88,6 @@ public class Graph
         }
         this.m = this.E.size();
         System.out.println("-- ...list of edges E initialized.");
-
-        // Initializes the vertexEndpoints HashMap
-        this.vertexEndpoints = new HashMap<Integer, List<Integer>>(this.n);
-        for(Integer key : vertexEndpoints.keySet())
-        {
-            this.vertexEndpoints.put(key, vertexEndpoints.get(key));
-        }
 
         // Initializes the finishingTimes list.
         this.finishingTimes = new HashMap<Integer, Integer>(this.n);
@@ -185,17 +186,17 @@ public class Graph
 
         // Copies the list of edges
         this.m = that.m;
-        this.E = new ArrayList<Edge>(this.n * 2);
-        for(int i = 0; i < that.E.size(); i++)
+        this.E = new HashMap<Integer, Edge>(this.m);
+        for(Integer key : that.E.keySet())
         {
-            this.E.add(new Edge(that.E.get(i)));
+            this.E.put(key, that.E.get(key));
         }
 
         // Initializes the vertexEndpoints HashMap
-        this.vertexEndpoints = new HashMap<Integer, List<Integer>>(this.n);
-        for(Integer key : that.vertexEndpoints.keySet())
+        this.vertexEdges = new HashMap<Integer, List<Integer>>(this.n);
+        for(Integer key : that.vertexEdges.keySet())
         {
-            this.vertexEndpoints.put(key,that.vertexEndpoints.get(key));
+            this.vertexEdges.put(key,that.vertexEdges.get(key));
         }
 
         // Copies the finishingTimes list
@@ -215,15 +216,26 @@ public class Graph
      */
     public Graph reverseGraph()
     {
-        // Gets vertexEndpoints hashmap with reversed vertices
-        Map<Integer,List<Integer>> vertexEndpoints =
-                new HashMap<Integer, List<Integer>>(this.n);
-        for(Integer key : this.vertexEndpoints.keySet())
+        // Gets vertexEdges hashmap with reversed vertices
+        Map<Integer, List<Integer>> vertexEndpoints = new HashMap<Integer,
+                List<Integer>>(this.n);
+        for(Integer key : this.vertexEdges.keySet())
         {
-            for(Integer head : this.vertexEndpoints.get(key))
+            for(Integer edgeId : this.vertexEdges.get(key))
             {
-                // Adds a new entry in the hashmap in reverse order
-                Graph.addVertexEndpoint(vertexEndpoints, head, key);
+                // Adds a new entry to the hashmap in reverse order
+                Edge edge = this.E.get(edgeId);
+                Graph.addVertexEndpoint(vertexEndpoints, edge.getHead(),
+                        edge.getTail());
+            }
+        }
+        // Guarantees that there's a value for each key in V, even though some
+        // might not have leaving edges
+        for(int i = 1; i <= this.n; i++)
+        {
+            if(vertexEndpoints.get(i) == null)
+            {
+                vertexEndpoints.put(i, new ArrayList<Integer>());
             }
         }
         // Creates and returns the graph with its edges reversed
@@ -268,7 +280,7 @@ public class Graph
      */
     public void setVertexAsExplored(int vertexId)
     {
-        Vertex vertex = this.V.get(vertexId);
+        Vertex vertex = this.V.remove(vertexId);
         vertex.setExplored();
         this.V.put(vertexId, vertex);
     }
@@ -323,19 +335,37 @@ public class Graph
      */
     public List<Vertex> getHeadVertices(int vertexId)
     {
-        // Returns null if vertex with the given id doesn't have head vertices
-        if(!this.vertexEndpoints.containsKey(vertexId))
-        {
-            return null;
-        }
         // Walks through the list of vertices head of the vertex with the
         // given id
         List<Vertex> headVertices = new ArrayList<Vertex>();
-        for(Integer wId : this.vertexEndpoints.get(vertexId))
+        for(Integer edgeId : this.vertexEdges.get(vertexId))
         {
-            headVertices.add(this.V.get(wId));
+            int headId = this.E.get(edgeId).getHead();
+            headVertices.add(this.V.get(headId));
         }
         return headVertices;
     }
 
+    //-------------------------------------------------------------------------
+    // PRIVATE HELPER METHODS
+    //-------------------------------------------------------------------------
+
+    /**
+     * Adds a new leaving edge to the given vertexId in the vertexEdges
+     * hashmap.
+     * @param vertexId Id of the vertex to assign the edge to.
+     * @param edgeId Id of the edge to add to the list of leaving edges.
+     */
+    private void addVertexEdge(Integer vertexId, int edgeId)
+    {
+        // Gets the list of edge's ids related to the given vertexId, adds the
+        // new edgeId and puts it again in the hashmap
+        List<Integer> edgesIds = this.vertexEdges.remove(vertexId);
+        if(edgesIds == null)
+        {
+            edgesIds = new ArrayList<Integer>();
+        }
+        edgesIds.add(edgeId);
+        this.vertexEdges.put(vertexId, edgesIds);
+    }
 }

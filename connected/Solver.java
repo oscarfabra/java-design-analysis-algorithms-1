@@ -55,6 +55,7 @@ public class Solver
             System.out.print((i != largestSccs.length - 1)?", ":".");
             i++;
         }
+        System.out.println();
 
         // Shows the actual vertices that comprise the obtained SCCs
         // show(largestSccs);

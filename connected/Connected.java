@@ -156,8 +156,8 @@ public class Connected
         System.out.print("---- Updating finishing times in graph...");
         for(int i = 1; i <= graphRev.getN(); i++)
         {
-            int f = graphRev.getFinishingTime(i);
-            graph.setFinishingTime(i, f);
+            int t = graphRev.getFinishingTime(i);
+            graph.setFinishingTime(i, t);
         }
         System.out.println("done.");
     }
@@ -255,7 +255,7 @@ public class Connected
         //Walks through the adjacent vertices with depth-first search
         for(Vertex adjVertex : graph.getHeadVertices(vertexId))
         {
-            if(!adjVertex.isExplored())
+            if(adjVertex!= null && !adjVertex.isExplored())
             {
                 DFSForFindingLeaders(graph, adjVertex.getId());
             }
