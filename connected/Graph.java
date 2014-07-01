@@ -219,6 +219,7 @@ public class Graph
         // Gets vertexEdges hashmap with reversed vertices
         Map<Integer, List<Integer>> vertexEndpoints = new HashMap<Integer,
                 List<Integer>>(this.n);
+        int edges = 1;
         for(Integer key : this.vertexEdges.keySet())
         {
             for(Integer edgeId : this.vertexEdges.get(key))
@@ -227,6 +228,12 @@ public class Graph
                 Edge edge = this.E.get(edgeId);
                 Graph.addVertexEndpoint(vertexEndpoints, edge.getHead(),
                         edge.getTail());
+                // Message in standard output for logging purposes
+                if((edges % 20000) == 0)
+                {
+                    System.out.println("---- "+ edges +" edges reversed.");
+                }
+                edges++;
             }
         }
         // Guarantees that there's a value for each key in V, even though some
