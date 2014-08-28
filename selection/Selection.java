@@ -1,17 +1,27 @@
 /**
- * Class that solves the problem of selecting the order i statistic from a
- * given array a (that is, the ith smallest element in the array).
+ * $Id: Selection.java, v 1.0 29/05/14 21:57 oscarfabra Exp $
+ * {@code Selection} Is a class that solves the problem of selecting the order 
+ * i statistic from a given array a (that is, the ith smallest element in the 
+ * array).
  *
  * @author <a href="mailto:oscarfabra@gmail.com">Oscar Fabra</a>
  * @since 29/05/2014
  */
 public class Selection
 {
-    // This class should not be instantiated.
-    private Selection(){}
+    //-------------------------------------------------------------------------
+    // CONSTANT
+    //-------------------------------------------------------------------------
 
     // Defines the length of each subgroup for the DSelect algorithm
     public static final int DSELECT_SUBGROUP_LENGTH = 5;
+
+    //-------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //-------------------------------------------------------------------------
+
+    // This class should not be instantiated.
+    private Selection(){}
 
     //-------------------------------------------------------------------------
     // PUBLIC METHODS

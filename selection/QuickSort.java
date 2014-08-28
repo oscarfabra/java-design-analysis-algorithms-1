@@ -1,9 +1,9 @@
 /**
- * $Id: QuickSort.java, v 1.1 20/05/14 21:57 oscarfabra Exp $
+ * $Id: QuickSort.java, v 1.0 20/05/14 21:57 oscarfabra Exp $
  * {@code QuickSort} Class that sorts an array of numbers using quicksort.
  *
  * @author <a href="mailto:oscarfabra@gmail.com">Oscar Fabra</a>
- * @version 1.1
+ * @version 1.0
  * @since 20/05/14
  */
 
@@ -13,6 +13,24 @@
  */
 public class QuickSort
 {
+    //-------------------------------------------------------------------------
+    // CLASS ENUMERATOR
+    //-------------------------------------------------------------------------    
+
+    /**
+     * Enumeration that holds the possible pivots.
+     */
+    public static enum Pivot
+    {
+        FIRST,              // Pivots over the first element
+        LAST,               // Pivots over the last element
+        MEDIAN_OF_THREE     // Pivots using the median-of-three rule
+    }
+
+    //-------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //-------------------------------------------------------------------------
+
     // This class should not be instantiated
     private QuickSort(){}
 
@@ -100,7 +118,7 @@ public class QuickSort
      */
     private static void sort(int[] a, int lb, int ub)
     {
-        if(lb >= ub){ return; }
+        if(ub >= lb){ return; }
         int p = partitionFirst(a, lb, ub);
         sort(a, lb, p - 1);
         sort(a, p + 1, ub);

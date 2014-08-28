@@ -13,6 +13,24 @@
  */
 public class QuickSort
 {
+    //-------------------------------------------------------------------------
+    // CLASS ENUMERATOR
+    //-------------------------------------------------------------------------    
+
+    /**
+     * Enumeration that holds the possible pivots.
+     */
+    public static enum Pivot
+    {
+        FIRST,              // Pivots over the first element
+        LAST,               // Pivots over the last element
+        MEDIAN_OF_THREE     // Pivots using the median-of-three rule
+    }
+
+    //-------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //-------------------------------------------------------------------------
+
     // This class should not be instantiated
     private QuickSort(){}
 
