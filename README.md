@@ -1,7 +1,7 @@
 Design and Analysis of Algorithms (Part 1)
 ===========================================
 
-<p><b>Description:</b> Solutions to problems based on Stanford's Homonymous Coursera Course<br/>
+<p><b>Description:</b> Solutions to problems based on Stanford's Coursera Course<br/>
 <b>Author:</b> Oscar Fabra, <a href="mailto:oscarfabra@gmail.com">oscarfabra@gmail.com</a></p>
 
 <p><b>About:</b></p>
