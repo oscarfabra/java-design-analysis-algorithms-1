@@ -1,5 +1,4 @@
-Design and Analysis of Algorithms (Part 1)
-===========================================
+<h2>Design and Analysis of Algorithms (Part 1)</h2>
 
 <p><b>Description:</b> Solutions to problems based on Stanford's Coursera Course<br/>
 <b>Author:</b> Oscar Fabra, <a href="mailto:oscarfabra@gmail.com">oscarfabra@gmail.com</a></p>
