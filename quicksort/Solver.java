@@ -76,7 +76,8 @@ public class Solver
         }
 
         // sorts and counts comparisons using the first element as pivot
-        long comparisons = QuickSort.sortAndCountComparisons(a, Pivot.FIRST);
+        long comparisons =
+                QuickSort.sortAndCountComparisons(a, QuickSort.Pivot.FIRST);
         System.out.println("Sorted array using first element as pivot: ");
         QuickSort.show(a);
         System.out.println("Number of comparisons: " + comparisons);
@@ -86,7 +87,8 @@ public class Solver
         copy(a, aux);
 
         // Sorts and counts comparisons using the last element as pivot
-        comparisons = QuickSort.sortAndCountComparisons(a, Pivot.LAST);
+        comparisons =
+                QuickSort.sortAndCountComparisons(a, QuickSort.Pivot.LAST);
         System.out.println("Sorted array using last element as pivot: ");
         QuickSort.show(a);
         System.out.println("Number of comparisons: " + comparisons);
@@ -96,7 +98,8 @@ public class Solver
         copy(a, aux);
 
         // Sorts and counts comparisons using the median-of-three pivoting rule
-        comparisons = QuickSort.sortAndCountComparisons(a, Pivot.MEDIAN_OF_THREE);
+        comparisons =
+                QuickSort.sortAndCountComparisons(a, QuickSort.Pivot.MEDIAN_OF_THREE);
         System.out.println("Sorted array using median-of-three elements as pivots: ");
         QuickSort.show(a);
         System.out.println("Number of comparisons: " + comparisons);
