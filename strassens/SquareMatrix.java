@@ -1,7 +1,7 @@
 /**
- * Class that represent a bi-dimensional matrix.
+ * Class that represents a bi-dimensional matrix.
  *
- * @author Oscar fabra, oscarfabra@gmail.com
+ * @author Oscar Fabra, oscarfabra@gmail.com
  * @since 08/05/2014
  */
 public class SquareMatrix
