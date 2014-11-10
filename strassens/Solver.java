@@ -126,7 +126,6 @@ public class Solver
      */
     public static void main(String [] args)
     {
-        // TODO: Debug the whole thing!
         try
         {
             // Reads the lines from the standard input
