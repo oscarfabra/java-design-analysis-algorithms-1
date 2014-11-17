@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7cabe811-ee9c-490b-bd6b-249225296349" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Graph.java" afterPath="$PROJECT_DIR$/Graph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Solver.java" afterPath="$PROJECT_DIR$/Solver.java" />
     </list>
     <ignored path="connected.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -125,8 +124,8 @@
       <file leaf-file-name="Connected.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Connected.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3059" max-vertical-offset="3836">
-              <caret line="233" column="43" selection-start-line="233" selection-start-column="43" selection-end-line="233" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3154" max-vertical-offset="3836">
+              <caret line="241" column="9" selection-start-line="241" selection-start-column="8" selection-end-line="241" selection-end-column="9" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -138,11 +137,10 @@
       <file leaf-file-name="Graph.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Graph.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31034482" vertical-offset="679" max-vertical-offset="5544">
-              <caret line="69" column="60" selection-start-line="69" selection-start-column="60" selection-end-line="69" selection-end-column="60" />
+            <state vertical-scroll-proportion="0.21839081" vertical-offset="1211" max-vertical-offset="4354">
+              <caret line="103" column="5" selection-start-line="103" selection-start-column="5" selection-end-line="103" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#8726#8766#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -571,12 +569,12 @@
       <workItem from="1416032907612" duration="712000" />
       <workItem from="1416099398982" duration="770000" />
       <workItem from="1416177507900" duration="124000" />
-      <workItem from="1416178287094" duration="8925000" />
+      <workItem from="1416178287094" duration="11824000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="209570000" />
+    <option name="totallyTimeSpent" value="212469000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -694,7 +692,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8726#8766#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -755,7 +752,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8726#8766#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -816,7 +812,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8726#8766#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -877,7 +872,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8726#8766#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -931,7 +925,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8726#8766#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1054,17 +1047,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Connected.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3059" max-vertical-offset="3836">
-          <caret line="233" column="43" selection-start-line="233" selection-start-column="43" selection-end-line="233" selection-end-column="43" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/SCC.txt">
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state />
@@ -1089,13 +1071,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Connected.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3154" max-vertical-offset="3836">
+          <caret line="241" column="9" selection-start-line="241" selection-start-column="8" selection-end-line="241" selection-end-column="9" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31034482" vertical-offset="679" max-vertical-offset="5544">
-          <caret line="69" column="60" selection-start-line="69" selection-start-column="60" selection-end-line="69" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.21839081" vertical-offset="1211" max-vertical-offset="4354">
+          <caret line="103" column="5" selection-start-line="103" selection-start-column="5" selection-end-line="103" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8726#8766#0" expanded="true" />
           </folding>
         </state>
       </provider>
