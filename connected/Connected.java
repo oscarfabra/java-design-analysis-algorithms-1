@@ -42,6 +42,9 @@ public class Connected
     // store it in the sccs map above
     private static List<Integer> scc;
 
+    // Stores the sizes of the 5 largest SCCs.
+    private static int [] largestSccs;
+
     //-------------------------------------------------------------------------
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
@@ -53,41 +56,24 @@ public class Connected
     //-------------------------------------------------------------------------
 
     /**
-     * Finds and returns the five largest (or less if 5 not found) strongly
-     * connected components (SCCs) of the given graph in descending order.
+     * Finds the five largest strongly connected components (SCCs) of given
+     * graph and returns their sizes in decreasing order.
      * @param graph Graph to examine.
-     * @return The five largest SCCs in the given graph, or the available ones
-     * if there are less, in descending order.
+     * @return Size of the largest 5 SCCs of the graph in decreasing order.
      */
-    public static List<Integer>[] findLargestSccs(Graph graph)
+    public static int [] findLargestSccs(Graph graph)
     {
+        // Initializes array
+        Connected.largestSccs = new int[5];
+
         // Finds all SCCs of the given graph and returns a list with the ids of
         // each of the vertices that comprise them.
         System.out.println("Finding all SCCs...");
         findAllSccs(graph);
         System.out.println("...all SCCs found.");
 
-        // Sorts the array of SCCs according to their respective sizes using
-        // quicksort and returns an array of keys with the sorted order of
-        // their lists' sizes in the sccs map
-        System.out.print("Sorting discovered SCCs...");
-        int [] keys = QuickSizes.sortSizes(Connected.sccs);
-        System.out.println("done.");
-
-        // Creates an array of lists and adds the 5 largest SCCs or the
-        // available SCCs if there are less than 5. Take into account that,
-        // keys.length = Connected.sccs.size()
-        int n = (keys.length >= 5) ? 5 : keys.length;
-        List<Integer>[] largestSccs = (LinkedList<Integer>[])new LinkedList[n];
-        int ub = keys.length - 1;
-        for(int i = ub, j = 0; j < n; i--, j++)
-        {
-            int key = keys[i];
-            largestSccs[j] = Connected.sccs.get(key);
-        }
-
-        // Returns the respective array of lists that correspond to each scc
-        return largestSccs;
+        // Returns the size of the 5 largest SCCs.
+        return Connected.largestSccs;
     }
 
     //-------------------------------------------------------------------------
@@ -103,12 +89,6 @@ public class Connected
      */
     private static Map<Integer, List<Integer>> findAllSccs(Graph graph)
     {
-        // Obtains a graph with the same nodes as graph but with its edges in
-        // reverse order
-        // System.out.println("-- Reversing graph...");
-        // Graph graphRev = graph.reverseGraph();
-        // System.out.println("-- graph reversed.");
-
         // Computes and sets the finishing times for each of the vertices in
         // the given graph using the reversed graph
         System.out.println("-- Computing magical ordering...");
@@ -197,8 +177,20 @@ public class Connected
                 // to list Connected.scc
                 DFSForFindingLeaders(graph, vertexId);
 
-                // Adds scc
+                // Adds scc and updates largestSccs array
                 Connected.sccs.put(Connected.s, Connected.scc);
+                int size = Connected.scc.size();
+                int i = 0;
+                while(i < 5 && size < Connected.largestSccs[i]) { i++; }
+                if(i < 5)
+                {
+                    for (int j = 4; j > i; j-- )
+                    {
+                        Connected.largestSccs[j] = Connected.largestSccs[j - 1];
+                    }
+                    Connected.largestSccs[i] = size;
+                }
+
                 // Shows a message in standard output for logging purposes
                 System.out.print("---- "+ Connected.sccs.size());
                 System.out.println((Connected.sccs.size() > 1)? " SCCs found.":

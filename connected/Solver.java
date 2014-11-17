@@ -45,17 +45,15 @@ public class Solver
         System.out.println("...new Graph object built.");
 
         // Finds its 5 largest SCCs (Strongly connected components)
-        List<Integer>[] largestSccs = Connected.findLargestSccs(graph);
+        int [] largestSccs = Connected.findLargestSccs(graph);
 
         // Shows the sizes of the largest SCCs
         System.out.println("The sizes of the largest strongly connected " +
                 "components are: ");
-        int i = 0;
-        for(List<Integer> scc : largestSccs)
+        for(int i = 0; i < 5; i++)
         {
-            System.out.print(scc.size());
-            System.out.print((i != largestSccs.length - 1)?", ":".");
-            i++;
+            System.out.print(largestSccs[i]);
+            System.out.print((i != 4)?",":".");
         }
         System.out.println();
 

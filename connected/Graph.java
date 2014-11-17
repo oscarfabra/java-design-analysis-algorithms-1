@@ -73,6 +73,12 @@ public class Graph
         System.out.println("-- Initializing list of edges E...");
         for(Integer key : this.V.keySet())
         {
+            // Guarantees that there's a value for each key in V
+            this.vertexEdgesLeaving.put(key, new ArrayList<Integer>());
+            List<Integer> edgesIds = this.vertexEdgesArriving.remove(key);
+            if(edgesIds == null) { edgesIds = new ArrayList<Integer>(); }
+            this.vertexEdgesArriving.put(key, edgesIds);
+
             // Walks through list verticesLeaving creating the appropriate edges
             for(Integer head : verticesLeaving.get(key))
             {
@@ -149,6 +155,11 @@ public class Graph
         if(headVertices == null) { headVertices = new ArrayList<Integer>(); }
         headVertices.add(w);
         verticesLeaving.put(v, headVertices);
+
+        // Guarantees w has an associated list even if it's empty
+        headVertices = verticesLeaving.remove(w);
+        if(headVertices == null) { headVertices = new ArrayList<Integer>(); }
+        verticesLeaving.put(w, headVertices);
     }
 
     //-------------------------------------------------------------------------
@@ -292,7 +303,7 @@ public class Graph
      * Adds a new entry to vertexEdgesLeaving and vertexEdgesArriving hashmaps.
      * @param vId Id of one vertex.
      * @param wId Id of another vertex.
-     * @param edgeId Id of the edge to add to the hashmaps
+     * @param edgeId Id of the edge to add to the hashmaps.
      */
     private void addVertexEdge(Integer vId, Integer wId, int edgeId)
     {
