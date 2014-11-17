@@ -36,14 +36,12 @@ public class Solver
         System.out.println("Building endpoints list for each vertex...");
         Map<Integer, List<Integer>> verticesLeaving = new HashMap<Integer,
                 List<Integer>>();
-        Map<Integer, List<Integer>> verticesArriving = new HashMap<Integer,
-                List<Integer>>();
-        Graph.buildVertexEndpoints(lines, verticesLeaving, verticesArriving);
+        Graph.buildVertexEndpoints(lines, verticesLeaving);
         System.out.println("...finished building endpoints lists.");
 
         // Creates a new Graph
         System.out.println("Building new Graph object...");
-        Graph graph = new Graph(verticesLeaving, verticesArriving);
+        Graph graph = new Graph(verticesLeaving);
         System.out.println("...new Graph object built.");
 
         // Finds its 5 largest SCCs (Strongly connected components)

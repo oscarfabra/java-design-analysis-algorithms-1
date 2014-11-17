@@ -52,10 +52,8 @@ public class Graph
     /**
      * Creates a new graph from the given map of head vertices of each vertex.
      * @param verticesLeaving Maps vertices with vertices they point at.
-     * @param verticesArriving Maps vertices with vertices that point to them.
      */
-    public Graph(Map<Integer, List<Integer>> verticesLeaving,
-                 Map<Integer, List<Integer>> verticesArriving)
+    public Graph(Map<Integer, List<Integer>> verticesLeaving)
     {
         // Initializes the map of vertices, O(n) algorithm
         this.V = new HashMap<Integer, Vertex>();
@@ -75,10 +73,6 @@ public class Graph
         System.out.println("-- Initializing list of edges E...");
         for(Integer key : this.V.keySet())
         {
-            // Guarantees that there's a value for each key in V
-            this.vertexEdgesLeaving.put(key, new ArrayList<Integer>());
-            this.vertexEdgesArriving.put(key, new ArrayList<Integer>());
-
             // Walks through list verticesLeaving creating the appropriate edges
             for(Integer head : verticesLeaving.get(key))
             {
@@ -115,12 +109,9 @@ public class Graph
      * <br/>
      * @param edges List of String, each with the head and tail of each edge.
      * @param verticesLeaving Maps vertices with vertices they point at.
-     * @param verticesArriving Maps vertices with vertices that point to them.
      */
-    public static void buildVertexEndpoints(
-            List<String> edges,
-            Map<Integer, List<Integer>> verticesLeaving,
-            Map<Integer, List<Integer>> verticesArriving)
+    public static void buildVertexEndpoints(List<String> edges, Map<Integer,
+            List<Integer>> verticesLeaving)
     {
         // Walks through the given list of strings constructing the hashmap
         for(int i = 0; i < edges.size(); i++)
@@ -132,7 +123,7 @@ public class Graph
             String[] vertices = edge.split(" ");
             int key = Integer.parseInt(vertices[0]);
             int value = Integer.parseInt(vertices[1]);
-            Graph.addVertexEndpoints(key, value, verticesLeaving, verticesArriving);
+            Graph.addVertexEndpoints(key, value, verticesLeaving);
 
             // Message in standard output for logging purposes
             if((i + 1) % 20000 == 0)
@@ -147,25 +138,17 @@ public class Graph
      * @param v Id of one vertex endpoint.
      * @param w Id of another vertex endpoint.
      * @param verticesLeaving Maps vertices with its head vertices.
-     * @param verticesArriving Maps vertices with its tail vertices.
      */
     private static void addVertexEndpoints(
             int v,
             int w,
-            Map<Integer, List<Integer>> verticesLeaving,
-            Map<Integer, List<Integer>> verticesArriving)
+            Map<Integer, List<Integer>> verticesLeaving)
     {
         // Adds value to chained list of head vertices.
         List<Integer> headVertices = verticesLeaving.remove(v);
         if(headVertices == null) { headVertices = new ArrayList<Integer>(); }
         headVertices.add(w);
         verticesLeaving.put(v, headVertices);
-
-        // Repeats for the tail vertices.
-        List<Integer> tailVertices = verticesArriving.remove(w);
-        if(tailVertices == null) { tailVertices = new ArrayList<Integer>(); }
-        tailVertices.add(v);
-        verticesArriving.put(w, tailVertices);
     }
 
     //-------------------------------------------------------------------------
@@ -205,7 +188,7 @@ public class Graph
     }
 
     /**
-     * Sets the vertex with the given id as explored in V.
+     * Sets the vertex with the given id as explored.
      * @param vertexId Id of the vertex to look for.
      */
     public void setVertexAsExplored(int vertexId)
@@ -216,28 +199,39 @@ public class Graph
     }
 
     /**
+     * Sets the vertex with the given id as unexplored.
+     * @param vertexId Id of the vertex to look for.
+     */
+    public void setVertexAsUnexplored(int vertexId)
+    {
+        Vertex vertex = this.V.remove(vertexId);
+        vertex.removeExplored();
+        this.V.put(vertexId, vertex);
+    }
+
+    /**
      * Gets the finishing time of vertex with the given id.
-     * @param vertexId Id of the vertex in map finishingTimes.
+     * @param vId Id of the vertex in map finishingTimes.
      * @return Finishing time of the given vertex.
      */
-    public int getFinishingTime(int vertexId)
+    public int getFinishingTime(int vId)
     {
-        if(!this.finishingTimes.containsKey(vertexId))
+        if(!this.finishingTimes.containsKey(vId))
         {
             return -1;
         }
-        return this.finishingTimes.get(vertexId);
+        return this.finishingTimes.get(vId);
     }
 
     /**
      * Sets the finishing time of vertex with the given id.
-     * @param vertexId Id of the vertex in list finishingTimes.
+     * @param vId Id of the vertex in list finishingTimes.
      * @param t Finishing time to assign to such vertex.
      */
-    public void setFinishingTime(int vertexId, int t)
+    public void setFinishingTime(int vId, int t)
     {
-        this.finishingTimes.put(vertexId, t);
-        this.finishingVertices.put(t, vertexId);
+        this.finishingTimes.put(vId, t);
+        this.finishingVertices.put(t, vId);
     }
 
     /**

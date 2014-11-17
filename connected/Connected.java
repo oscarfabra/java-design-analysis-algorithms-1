@@ -115,6 +115,13 @@ public class Connected
         setMagicalOrdering(graph);
         System.out.println("-- ...finished computing magical ordering.");
 
+        System.out.print("Updating vertices to unexplored...");
+        for (int i= 1; i <= graph.getN(); i++)  // Assumes id's from 1 to n
+        {
+            graph.setVertexAsUnexplored(i);
+        }
+        System.out.println("done.");
+
         // Gets the SCCs one by one processing vertices in decreasing order of
         // finishing times
         System.out.println("-- Discovering SCCs...");
@@ -152,15 +159,6 @@ public class Connected
             }
         }
         System.out.println("---- ...finished getting times for vertices.");
-
-        // Updates graph with the corresponding finishing times from graphRev
-        /*System.out.print("---- Updating finishing times in graph...");
-        for(int i = 1; i <= graph.getN(); i++)
-        {
-            int t = graphRev.getFinishingTime(i);
-            graph.setFinishingTime(i, t);
-        }
-        System.out.println("done.");*/
     }
 
     /**
@@ -191,21 +189,20 @@ public class Connected
             {
                 // Initializes the scc that is about to be built
                 Connected.scc = new LinkedList<Integer>();
+
                 // Sets current vertex id as the leader vertex
                 Connected.s = vertexId;
+
                 // Finds each of the SCCs adding the corresponding vertices
                 // to list Connected.scc
                 DFSForFindingLeaders(graph, vertexId);
-                // Adds only sccs of size at least 3, for performance issues.
-                // Change if required.
-                // if(Connected.scc.size() >= 3)
-                // {
-                    Connected.sccs.put(Connected.s, Connected.scc);
-                    // Shows a message in standard output for logging purposes
-                    System.out.print("---- "+ Connected.sccs.size());
-                    System.out.println((Connected.sccs.size() > 1)? " SCCs found.":
-                            " SCC found.");
-                // }
+
+                // Adds scc
+                Connected.sccs.put(Connected.s, Connected.scc);
+                // Shows a message in standard output for logging purposes
+                System.out.print("---- "+ Connected.sccs.size());
+                System.out.println((Connected.sccs.size() > 1)? " SCCs found.":
+                        " SCC found.");
             }
             // Shows a message for logging purposes
             if((graph.getN() - t + 1) % 100 == 0)
@@ -224,23 +221,23 @@ public class Connected
      * tail) on the given graph to set finishing times for its vertices. It's
      * run backwards to simulate a reverse version of given graph.
      * @param graph Graph to examine as if it were reversed.
-     * @param vertexId Id of the vertex to start running DFS at.
+     * @param vId Id of the vertex to start running DFS at.
      */
-    private static void DFSForFinishingTimes(Graph graph, int vertexId)
+    private static void DFSForFinishingTimes(Graph graph, int vId)
     {
         // Sets the current vertex as explored
-        graph.setVertexAsExplored(vertexId);
-        // Walks through the adjacent vertices with depth-first search
-        for(Vertex adjVertex : graph.getHeadVertices(vertexId))
+        graph.setVertexAsExplored(vId);
+        // Walks through the adjacent vertices using depth-first search
+        for(Vertex adjVertex : graph.getTailVertices(vId))
         {
             if(adjVertex != null && !adjVertex.isExplored())
             {
                 DFSForFinishingTimes(graph, adjVertex.getId());
             }
         }
-        // Sets the finishing time for the vertex with id vertexId
+        // Sets the finishing time for vId
         Connected.t++;
-        graph.setFinishingTime(vertexId, t);
+        graph.setFinishingTime(vId, t);
     }
 
     /**
@@ -248,21 +245,21 @@ public class Connected
      * vertices of each of the strongly-connected components (SCCs) and build
      * each of the SCCs.
      * @param graph Graph to examine.
-     * @param vertexId Id of the vertex to start running DFS at.
+     * @param vId Id of the vertex to start running DFS at.
      */
-    private static void DFSForFindingLeaders(Graph graph, int vertexId)
+    private static void DFSForFindingLeaders(Graph graph, int vId)
     {
         // Sets the current vertex as explored
-        graph.setVertexAsExplored(vertexId);
+        graph.setVertexAsExplored(vId);
         //Walks through the adjacent vertices with depth-first search
-        for(Vertex adjVertex : graph.getHeadVertices(vertexId))
+        for(Vertex adjVertex : graph.getHeadVertices(vId))
         {
             if(adjVertex!= null && !adjVertex.isExplored())
             {
                 DFSForFindingLeaders(graph, adjVertex.getId());
             }
         }
-        // Adds current vertexId to the corresponding scc
-        Connected.scc.add(vertexId);
+        // Adds current vId to the corresponding scc
+        Connected.scc.add(vId);
     }
 }

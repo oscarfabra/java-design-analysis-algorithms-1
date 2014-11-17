@@ -55,25 +55,21 @@ public class Vertex
      * Gets the id of this vertex.
      * @return Id of this vertex.
      */
-    public int getId()
-    {
-        return id;
-    }
+    public int getId() { return id; }
 
     /**
      * Says if the current vertex has been explored or not.
      * @return Whether current vertex has been explored.
      */
-    public boolean isExplored()
-    {
-        return this.explored;
-    }
+    public boolean isExplored() { return this.explored; }
 
     /**
      * Indicates that current vertex has been explored.
      */
-    public void setExplored()
-    {
-        this.explored = true;
-    }
+    public void setExplored() { this.explored = true; }
+
+    /**
+     * Indicates current vertex is not explored.
+     */
+    public void removeExplored() { this.explored = false; }
 }
