@@ -7,7 +7,10 @@
  * @since 3/06/14
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a directed graph with n vertices and m edges.
@@ -334,16 +337,32 @@ public class Graph
     }
 
     /**
-     * Returns a list with the vertices to where the vertex with the given id
-     * points at.
+     * Returns a list with vertices to where vertex with given id points at.
      * @param vertexId Id of the vertex to look for.
      * @return List of vertices to where the vertex with the given id points
      * at.
      */
     public List<Vertex> getHeadVertices(int vertexId)
     {
-        // Walks through the list of vertices head of the vertex with the
-        // given id
+        // Walks through the list of vertices head of vertex with given id
+        List<Vertex> headVertices = new ArrayList<Vertex>();
+        for(Integer edgeId : this.vertexEdges.get(vertexId))
+        {
+            int headId = this.E.get(edgeId).getHead();
+            headVertices.add(this.V.get(headId));
+        }
+        return headVertices;
+    }
+
+    /**
+     * Returns a list with vertices to where vertex with given id points at.
+     * @param vertexId Id of the vertex to look for.
+     * @return List of vertices to where the vertex with the given id points
+     * at.
+     */
+    public List<Vertex> getTailVertices(int vertexId)
+    {
+        // Walks through the list of vertices head of vertex with given id
         List<Vertex> headVertices = new ArrayList<Vertex>();
         for(Integer edgeId : this.vertexEdges.get(vertexId))
         {

@@ -8,7 +8,10 @@
  * @since 13/06/2014
  */
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class that finds the strongly connected components (SCCs) of a given graph.
@@ -102,14 +105,14 @@ public class Connected
     {
         // Obtains a graph with the same nodes as graph but with its edges in
         // reverse order
-        System.out.println("-- Reversing graph...");
-        Graph graphRev = graph.reverseGraph();
-        System.out.println("-- graph reversed.");
+        // System.out.println("-- Reversing graph...");
+        // Graph graphRev = graph.reverseGraph();
+        // System.out.println("-- graph reversed.");
 
         // Computes and sets the finishing times for each of the vertices in
         // the given graph using the reversed graph
         System.out.println("-- Computing magical ordering...");
-        setMagicalOrdering(graph, graphRev);
+        setMagicalOrdering(graph);
         System.out.println("-- ...finished computing magical ordering.");
 
         // Gets the SCCs one by one processing vertices in decreasing order of
@@ -125,10 +128,8 @@ public class Connected
      * Computes and sets the finishing times for each of the vertices in
      * graph using depth-first search in the reversed graph graphRev.
      * @param graph Graph to compute the finishing times for.
-     * @param graphRev Graph with the same vertices as graph but with its edges
-     *                 reversed.
      */
-    private static void setMagicalOrdering(Graph graph, Graph graphRev)
+    private static void setMagicalOrdering(Graph graph)
     {
         // Variable used to assign each vertex a finishing time
         Connected.t = 0;
@@ -136,30 +137,30 @@ public class Connected
         // Gets the finishing times for each vertex of graphRev
         System.out.println("---- Getting finishing times for each vertex in " +
                 "graphRev...");
-        for(int i = graphRev.getN(); i > 0; i--)
+        for(int i = graph.getN(); i > 0; i--)
         {
-            Vertex vertex = graphRev.getVertex(i);
+            Vertex vertex = graph.getVertex(i);
             if(vertex != null && !vertex.isExplored())
             {
-                DFSForFinishingTimes(graphRev, i);
+                DFSForFinishingTimes(graph, i);
             }
-            // Shows a message for logging purposes
-            if((graphRev.getN() - i + 1) % 20000 == 0)
+            // Shows a message, for logging purposes
+            if((graph.getN() - i + 1) % 20000 == 0)
             {
-                System.out.println("------ "+ (graphRev.getN() - i + 1) +
+                System.out.println("------ "+ (graph.getN() - i + 1) +
                         " finishing times setup.");
             }
         }
         System.out.println("---- ...finished getting times for vertices.");
 
         // Updates graph with the corresponding finishing times from graphRev
-        System.out.print("---- Updating finishing times in graph...");
-        for(int i = 1; i <= graphRev.getN(); i++)
+        /*System.out.print("---- Updating finishing times in graph...");
+        for(int i = 1; i <= graph.getN(); i++)
         {
             int t = graphRev.getFinishingTime(i);
             graph.setFinishingTime(i, t);
         }
-        System.out.println("done.");
+        System.out.println("done.");*/
     }
 
     /**
@@ -219,26 +220,27 @@ public class Connected
     }
 
     /**
-     * Runs depth-first search (DFS) on the given graph to set the finishing
-     * times of each of its vertices given a vertexId to start at.
-     * @param graphRev Graph to examine.
+     * Runs depth-first search (DFS) backwards (crossing edges from head to
+     * tail) on the given graph to set finishing times for its vertices. It's
+     * run backwards to simulate a reverse version of given graph.
+     * @param graph Graph to examine as if it were reversed.
      * @param vertexId Id of the vertex to start running DFS at.
      */
-    private static void DFSForFinishingTimes(Graph graphRev, int vertexId)
+    private static void DFSForFinishingTimes(Graph graph, int vertexId)
     {
         // Sets the current vertex as explored
-        graphRev.setVertexAsExplored(vertexId);
+        graph.setVertexAsExplored(vertexId);
         // Walks through the adjacent vertices with depth-first search
-        for(Vertex adjVertex : graphRev.getHeadVertices(vertexId))
+        for(Vertex adjVertex : graph.getHeadVertices(vertexId))
         {
             if(adjVertex != null && !adjVertex.isExplored())
             {
-                DFSForFinishingTimes(graphRev, adjVertex.getId());
+                DFSForFinishingTimes(graph, adjVertex.getId());
             }
         }
         // Sets the finishing time for the vertex with id vertexId
         Connected.t++;
-        graphRev.setFinishingTime(vertexId, t);
+        graph.setFinishingTime(vertexId, t);
     }
 
     /**
