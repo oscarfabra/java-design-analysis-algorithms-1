@@ -33,8 +33,11 @@ public class Graph
     // List of edges
     private Map<Integer,Edge> E;
 
-    // Map of lists of vertices that indicates leaving edges of each vertex
-    private Map<Integer,List<Integer>> vertexEdges;
+    // Maps vertices with the edges that leave from them
+    private Map<Integer,List<Integer>> vertexEdgesLeaving;
+
+    // Maps vertices with the edges that arrive at them
+    private Map<Integer,List<Integer>> vertexEdgesArriving;
 
     // Finishing times of each vertex, finishingTimes.size() = n
     private Map<Integer,Integer> finishingTimes;
@@ -48,32 +51,36 @@ public class Graph
 
     /**
      * Creates a new graph from the given map of head vertices of each vertex.
-     * @param vertexEndpoints Map of Lists with the endpoints of each vertex.
+     * @param verticesLeaving Maps vertices with vertices they point at.
+     * @param verticesArriving Maps vertices with vertices that point to them.
      */
-    public Graph(Map<Integer, List<Integer>> vertexEndpoints)
+    public Graph(Map<Integer, List<Integer>> verticesLeaving,
+                 Map<Integer, List<Integer>> verticesArriving)
     {
         // Initializes the map of vertices, O(n) algorithm
         this.V = new HashMap<Integer, Vertex>();
         System.out.print("-- Initializing list of vertices V...");
-        for(Integer key : vertexEndpoints.keySet())
+        for(Integer key : verticesLeaving.keySet())
         {
             this.V.put(key, new Vertex(key));
         }
         this.n = this.V.size();
         System.out.println("done.");
 
-        // Initializes the list of edges and vertexEdges, O(n*m) algorithm
+        // Initializes the list of edges and vertexEdges, O(m) algorithm
         int newEdgeId = 1;
         this.E = new HashMap<Integer, Edge>(this.n * 2);
-        this.vertexEdges = new HashMap<Integer, List<Integer>>(this.n);
+        this.vertexEdgesLeaving = new HashMap<Integer, List<Integer>>(this.n);
+        this.vertexEdgesArriving = new HashMap<Integer, List<Integer>>(this.n);
         System.out.println("-- Initializing list of edges E...");
-        for(Integer key : vertexEndpoints.keySet())
+        for(Integer key : this.V.keySet())
         {
             // Guarantees that there's a value for each key in V in
             // vertexEdges, even though some might not have leaving edges
             if(vertexEndpoints.get(key).size() == 0)
             {
-                this.vertexEdges.put(key, new ArrayList<Integer>());
+                this.vertexEdgesLeaving.put(key, new ArrayList<Integer>());
+                this.vertexEdgesArriving.put(key, new ArrayList<Integer>());
             }
             // Walks through list vertexHeads creating the appropriate edges
             for(Integer head : vertexEndpoints.get(key))
@@ -119,15 +126,15 @@ public class Graph
      * "a b" where a is the tail and b the head of each edge, a, b in [1...n].
      * <br/>
      * @param edges List of String, each with the head and tail of each edge.
-     * @return Array of lists of Integers with the adjacent vertices of each
-     * vertex.
+     * @param verticesLeaving Maps vertices with vertices they point at.
+     * @param verticesArriving Maps vertices with vertices that point to them.
      */
-    public static Map<Integer, List<Integer>> buildVertexEndpoints(
-            List<String> edges)
+    public static void buildVertexEndpoints(
+            List<String> edges,
+            Map<Integer, List<Integer>> verticesLeaving,
+            Map<Integer, List<Integer>> verticesArriving)
     {
         // Walks through the given list of strings constructing the hashmap
-        Map<Integer, List<Integer>> vertexEndpoints = new HashMap<Integer,
-                List<Integer>>();
         for(int i = 0; i < edges.size(); i++)
         {
             // Extracts and adds the corresponding pair (key, value of list) to
@@ -137,7 +144,7 @@ public class Graph
             String[] vertices = edge.split(" ");
             int key = Integer.parseInt(vertices[0]);
             int value = Integer.parseInt(vertices[1]);
-            Graph.addVertexEndpoint(vertexEndpoints, key, value);
+            Graph.addVertexEndpoints(key, value, verticesLeaving, verticesArriving);
 
             // Message in standard output for logging purposes
             if((i + 1) % 20000 == 0)
@@ -145,28 +152,32 @@ public class Graph
                 System.out.println("---- "+(i + 1)+" endPoints stored.");
             }
         }
-        return vertexEndpoints;
     }
 
     /**
-     * Adds a key and value to the given map. The value is added to the chained
-     * list of the given key.
-     * @param vertexEndpoints Map to add the value to.
-     * @param key Key of the list on which to add the given value.
-     * @param value Value to add to the list of the given key in the map.
+     * Adds vertices to the given maps.
+     * @param v One vertex endpoint.
+     * @param w Another vertex endpoint.
+     * @param verticesLeaving Maps vertices with its head vertices.
+     * @param verticesArriving Maps vertices with its tail vertices.
      */
-    private static void addVertexEndpoint(Map<Integer, List<Integer>> vertexEndpoints,
-                                          int key, int value)
+    private static void addVertexEndpoints(
+            int v,
+            int w,
+            Map<Integer, List<Integer>> verticesLeaving,
+            Map<Integer, List<Integer>> verticesArriving)
     {
-        // Removes the list of the given key, adds the value, and puts it
-        // again
-        List<Integer> headVertices = vertexEndpoints.remove(key);
-        if(headVertices == null)
-        {
-            headVertices = new ArrayList<Integer>();
-        }
-        headVertices.add(value);
-        vertexEndpoints.put(key, headVertices);
+        // Adds value to chained list of head vertices.
+        List<Integer> headVertices = verticesLeaving.remove(v);
+        if(headVertices == null) { headVertices = new ArrayList<Integer>(); }
+        headVertices.add(w);
+        verticesLeaving.put(v, headVertices);
+
+        // Repeats for the tail vertices.
+        List<Integer> tailVertices = verticesArriving.remove(w);
+        if(tailVertices == null) { tailVertices = new ArrayList<Integer>(); }
+        tailVertices.add(v);
+        verticesArriving.put(w, tailVertices);
     }
 
     //-------------------------------------------------------------------------
@@ -355,15 +366,14 @@ public class Graph
     }
 
     /**
-     * Returns a list with vertices to where vertex with given id points at.
+     * Returns a list with tail vertices of given vertex.
      * @param vertexId Id of the vertex to look for.
-     * @return List of vertices to where the vertex with the given id points
-     * at.
+     * @return List of tail vertices of given vertex.
      */
     public List<Vertex> getTailVertices(int vertexId)
     {
-        // Walks through the list of vertices head of vertex with given id
-        List<Vertex> headVertices = new ArrayList<Vertex>();
+        // Walks through the list of tail vertices of vertex with given id
+        List<Vertex> tailVertices = new ArrayList<Vertex>();
         for(Integer edgeId : this.vertexEdges.get(vertexId))
         {
             int headId = this.E.get(edgeId).getHead();
@@ -377,8 +387,7 @@ public class Graph
     //-------------------------------------------------------------------------
 
     /**
-     * Adds a new leaving edge to the given vertexId in the vertexEdges
-     * hashmap.
+     * Adds a new leaving edge to the given vertexId in vertexEdges hashmap.
      * @param vertexId Id of the vertex to assign the edge to.
      * @param edgeId Id of the edge to add to the list of leaving edges.
      */

@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -33,13 +34,16 @@ public class Solver
     private static void solve(List<String> lines)
     {
         System.out.println("Building endpoints list for each vertex...");
-        Map<Integer,List<Integer>> vertexEndpoints =
-                Graph.buildVertexEndpoints(lines);
+        Map<Integer, List<Integer>> verticesLeaving = new HashMap<Integer,
+                List<Integer>>();
+        Map<Integer, List<Integer>> verticesArriving = new HashMap<Integer,
+                List<Integer>>();
+        Graph.buildVertexEndpoints(lines, verticesLeaving, verticesArriving);
         System.out.println("...finished building endpoints lists.");
 
         // Creates a new Graph
         System.out.println("Building new Graph object...");
-        Graph graph = new Graph(vertexEndpoints);
+        Graph graph = new Graph(verticesLeaving, verticesArriving);
         System.out.println("...new Graph object built.");
 
         // Finds its 5 largest SCCs (Strongly connected components)
