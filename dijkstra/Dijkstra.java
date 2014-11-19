@@ -9,13 +9,24 @@
  */
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * Class that implements Dijkstra's shortest path algorithm.
  */
 public class Dijkstra
 {
+    //-------------------------------------------------------------------------
+    // CONSTANT
+    //-------------------------------------------------------------------------
+
+    // Value to assign to an theoretical infinite value
+    private static final int INFINITY = 1000000;
+
     //-------------------------------------------------------------------------
     // CLASS ATTRIBUTES
     //-------------------------------------------------------------------------
@@ -73,7 +84,7 @@ public class Dijkstra
         // Assumes infinite distances between s and all the other vertices
         for(int i = 0; i < n; i++)
         {
-            Dijkstra.a[i] = 1000000;
+            Dijkstra.a[i] = Dijkstra.INFINITY;
         }
 
         // Mark vertex s as processed and the distance to itself as 0
@@ -82,11 +93,14 @@ public class Dijkstra
 
         // Walks through each vertex not yet explored, calculates its key and
         // adds it to the vertexHeapKey and heapKeyVertex HashMaps
-        for(int i = 2; i <= n; i++)
+        for(int i = 1; i <= n; i++)
         {
-            int vertexScore = Dijkstra.minGreedyScore(i, graph);
-            Dijkstra.a[i - 1] = vertexScore;
-            Dijkstra.addToHeap(i, vertexScore);
+            if (i != s)
+            {
+                int vertexScore = Dijkstra.minGreedyScore(i, graph);
+                Dijkstra.a[i - 1] = vertexScore;
+                Dijkstra.addToHeap(i, vertexScore);
+            }
         }
 
         // Walks through each vertex in the graph assigning the shortest path

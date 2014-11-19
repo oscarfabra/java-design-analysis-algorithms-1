@@ -22,6 +22,13 @@ import java.util.List;
 public class Solver
 {
     //-------------------------------------------------------------------------
+    // CLASS VARIABLE
+    //-------------------------------------------------------------------------
+
+    // Stores the source vertex obtained from second program argument
+    private static int s = 0;
+
+    //-------------------------------------------------------------------------
     // PUBLIC METHODS
     //-------------------------------------------------------------------------
 
@@ -45,7 +52,7 @@ public class Solver
         // Computes the shortest paths from vertex 1 to all other vertices in
         // the given graph. paths[i] contains the path from vertex 1 to vertex
         // with id i + 1, i in [0...n-1]
-        int [] paths = Dijkstra.solve(1, graph);
+        int [] paths = Dijkstra.solve(Solver.s, graph);
 
         System.out.println("The lengths of the shortest paths from vertex 1 " +
                 "to vertices 7, 37, 59, 82, 99, 115, 133, 165, 188, 197 are:");
@@ -54,6 +61,12 @@ public class Solver
         System.out.print(paths[98] + ", " + paths[114] + ", ");
         System.out.print(paths[132] + ", " + paths[164] + ", ");
         System.out.print(paths[187] + ", " + paths[196] + ".");
+
+        /*for(int i = 0; i < n; i++)
+        {
+            System.out.print(paths[i]);
+            System.out.print((i != n - 1)? ", " : ".");
+        }*/
     }
 
     /**
@@ -98,7 +111,17 @@ public class Solver
         {
             e.printStackTrace();
         }
-
+        // Gets the source vertex from the second argument, throws exception
+        // if invalid or not found
+        try
+        {
+            Solver.s = Integer.parseInt(args[1]);
+        }
+        catch(NumberFormatException nfe)
+        {
+            throw nfe;
+        }
+        // Returns the lines read
         return lines;
     }
 
@@ -110,6 +133,7 @@ public class Solver
      * Main test method.
      * @param args filepath relative to the file with the representation of a
      *             directed graph in the form -file=filepath
+     *             Source vertex s as second parameter, s in [1,2,...,n]
      */
     public static void main(String [] args)
     {
