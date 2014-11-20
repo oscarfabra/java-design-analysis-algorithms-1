@@ -9,4 +9,4 @@
   and Analysis" (Part 1) from Stanford University. 
 * Solutions are entirely own and are subject to the course's requirements.
 * Each directory contains one or more solutions to a popular algorithm's problem.
-* Programs are written in Java 1.7.
+* Programs are tested with Java 1.8.
