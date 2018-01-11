@@ -33,7 +33,7 @@ public class Graph
     // List of edges
     private List<Edge> E;
 
-    // Each vertex point to the id of the edges incident on it
+    // Each vertex points to the id of the edges incident on it
     private Map<Integer, List<Integer>> vertexEdges;
 
     // Indicates the initial number of vertices, for control purposes

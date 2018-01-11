@@ -17,8 +17,7 @@ public class MinCut
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
 
-    // This class should not be instantiated
-    private MinCut(){}
+    private MinCut(){}     // This class should not be instantiated
 
     //-------------------------------------------------------------------------
     // PUBLIC METHODS
